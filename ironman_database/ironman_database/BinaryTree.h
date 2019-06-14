@@ -36,7 +36,7 @@ public:
 	void printTree(void visit(ItemType&, int)) const { _print(visit, rootPtr, 0); }
 
 	// abstract functions to be implemented by derived class
-	virtual bool insert(const ItemType& newData) = 0;
+	virtual bool insert(const ItemType* newData) = 0;
 	virtual bool remove(const ItemType& data) = 0;
 	virtual bool getEntry(const ItemType& anEntry, ItemType& returnedItem) const = 0;
 

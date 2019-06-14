@@ -13,43 +13,60 @@ using namespace std;
 // Type of BST
 typedef BinarySearchTree<Armors> TreeType;
 
-// functions prototype
+// FUNCTIONS PROTOTYPE
+// menus
 void menu();
-void searchSubmenu();
-void listSubmenu();
-void processChoice();
-string inputKey();
+void searchSubmenu(TreeType& bst);
+void listSubmenu(TreeType& bst);
+void processChoice(TreeType& bst);
 
+string inputKey();
+void insertToTree(TreeType& bst);	// ADD
+
+// search
+void searchBST(TreeType& bst);
+
+// print list
 void preOrderTraversal(TreeType& bst);
 void inOrderTraversal(TreeType& bst);
 void postOrderTraversal(TreeType& bst);
 void breadthTraversal(TreeType& bst);
-
+void printTree(TreeType& bst);
 
 void fileInput(string filename, TreeType &bst);
 
 
 void screenOutput();
 
+// display function to pass to BST print function
 void display(Armors& item)
 {
 	cout << item << endl;
 }
-
+void displayTree(Armors& item, int level)
+{
+	// print 'level'  TABs to make indention
+	for (int i = 0; i < level; ++i)
+	{
+		cout << "\t";
+	}
+	cout << "Level " << level + 1 << ". " << item << endl;
+}
 
 
 int main()
 {
 	const char inputFileName[] = "armors.txt";
 
-	TreeType bst;
-	fileInput(inputFileName, bst);
+	Armors* A = new Armors;
+	TreeType bstP;
+	TreeType bstS;
+	fileInput(inputFileName, bstP);
+	fileInput(inputFileName, bstS);
 
 	menu();
-	processChoice();
+	processChoice(bstP);
 
-	
-	Armors *A= new Armors;
 	Hash H(1);
 	H.insertItem(A);
 	string del = "Sneaky";
@@ -88,7 +105,8 @@ void fileInput(string filename, TreeType &bst)
 		getline(infile, precede, ';');
 		getline(infile, succeed, ';');
 
-		Armors armors(codename, type, creator, year, users, movie, curstat, capbl, weap, precede, succeed);
+		Armors *armors;
+		armors = new Armors(codename, type, creator, year, users, movie, curstat, capbl, weap, precede, succeed);
 		bst.insert(armors);
 
 		// TEST IF FILE IS READ PROPERLY
@@ -226,7 +244,7 @@ int userChoice()
 }
 */
 
-void searchSubmenu()
+void searchSubmenu(TreeType& bst)
 {
 	int y = -1;
 	cout << "Search by:" << endl;
@@ -245,18 +263,18 @@ void searchSubmenu()
 	case 2: // search by secondary key function
 		break;
 	case 0: menu();
-		processChoice();
+		processChoice(bst);
 		break;
 	default: 
 		cout << "----------------" << endl;
 		cout << " INPUT INVALID. " << endl;
 		cout << "----------------" << endl;
-		searchSubmenu();
+		searchSubmenu(bst);
 	}
 
 }
 
-void listSubmenu()
+void listSubmenu(TreeType& bst)
 {
 	int y = -1;
 	cout << "List as:" << endl;
@@ -283,23 +301,28 @@ void listSubmenu()
 	case 3: // list sorted by secondary key
 		break;
 	case 4: // list printed as tree
+		printTree(bst);
 		break;
 	case 5: // list printed as level-order
+		breadthTraversal(bst);
 		break;
 	case 6: // list printed as pre-order
+		preOrderTraversal(bst);
 		break;
 	case 7: // list printed as in-order
+		inOrderTraversal(bst);
 		break;
 	case 8: // list printed as post-order
+		postOrderTraversal(bst);
 		break;
 	case 0: menu();
-		processChoice();
+		processChoice(bst);
 		break;
 	default: 
 		cout << "----------------" << endl;
 		cout << " INPUT INVALID. " << endl;
 		cout << "----------------" << endl;
-		listSubmenu();
+		listSubmenu(bst);
 	}
 
 }
@@ -308,7 +331,7 @@ void listSubmenu()
 void processChoice(char choice, TreeType& bst):
 processing user's choice and execute the function of the choice
 *****************************************************************/
-void processChoice()
+void processChoice(TreeType& bst)
 {
 	int x = 0;
 	cout << "User input: ";
@@ -318,20 +341,57 @@ void processChoice()
 	switch (x)
 	{
 	case 1: // add function
+		insertToTree(bst);
 		break;
 	case 2: // delete function
 		break;
 	case 3:
-		searchSubmenu();
+		searchSubmenu(bst);
 	case 4:
-		listSubmenu();
+		listSubmenu(bst);
 	case 0: cout << "Program ended" << endl;
 		exit(EXIT_FAILURE);
 	default:
 		cout << "----------------" << endl;
 		cout << " INPUT INVALID. " << endl;
 		cout << "----------------" << endl;
-		processChoice();
+		processChoice(bst);
+	}
+}
+
+/**********************************************************************
+ Insert manager: insert data of college by the user into the list
+ Input Parameter: list
+ **********************************************************************/
+void insertToTree(TreeType& bst)
+{
+	string codename = "";
+	
+
+	cout << "\n Insert Data \n";
+	cout << "===============\n";
+	cout << "Codename: ";
+
+	getline(cin, codename);
+	cout << endl;
+
+	Armors* A;
+	A = new Armors;
+
+	while (codename != "Q")
+	{
+		if (codename != "Q")
+		{
+			if (bst.getEntry(codename, A->getCodename))
+			{
+				cout << "Armor already exist." << endl;
+			}
+			else
+			{
+				cin >> A;
+				bst.insert(A);
+			}
+		}
 	}
 }
 
@@ -350,7 +410,7 @@ void searchBST(TreeType& bst)
 	Armors armor(key);
 	if (bst.getEntry(armor, armor))
 	{
-		display(toy);
+		display(armor);
 	}
 	else
 	{
@@ -388,6 +448,11 @@ void breadthTraversal(TreeType& bst)
 	cout << "Level-order:" << endl;
 	bst.levelOrder(display);
 	cout << "---------------------------------------------" << endl;
+}
+
+void printTree(TreeType& bst)
+{
+	bst.printTree(displayTree);
 }
 
 void screenOutput()
