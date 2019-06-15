@@ -59,10 +59,10 @@ public:
 	// ~Armor();
 
 	// Setters
-	void setCodenmae(string cn) { codename = cn; }
+	void setCodename(string cn) { codename = cn; }
 
 	// Getters
-	string getCodename() const { return codename; }
+	string getCodename() { return codename; }
 
 	// Other functions
 

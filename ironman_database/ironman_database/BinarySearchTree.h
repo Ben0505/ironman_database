@@ -41,7 +41,7 @@ public:
 	bool remove(const ItemType& anEntry);
 	// find a target node
 	bool getEntry(const ItemType& target, ItemType& returnedItem) const;
-	bool getEntry1(string item, ItemType* returnedItem) const;
+	bool getEntry1(string item, ItemType returnedItem) ;
 
 	// find the smallest node
 	bool getSmallest(ItemType& returnedItem) const;
@@ -86,7 +86,7 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType& ret
 
 //Finding entries within a tree
 template<class ItemType>
-bool BinarySearchTree<ItemType>::getEntry1(string item, ItemType* returnedItem) const
+bool BinarySearchTree<ItemType>::getEntry1(string item, ItemType returnedItem)
 {
 	BinaryNode<ItemType>* newNodePtr = findNode1(this->rootPtr, item);
 

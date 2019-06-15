@@ -404,40 +404,31 @@ string inputKey()
 	return key;
 }
 
+/*
 void searchBST(TreeType& bst)
 {
-	string pkey, skey;
+	string pkey="", skey="";
 
-	cout << "Enter Primary key: ";
-	//pkey = inputKey();
-	getline(cin, pkey);
-	cout << endl;
+	Armors A1;
+	Armors A2;
+	A2.setCodename("");
 
-	Armors armor(pkey);
-
-	if (bst.getEntry(armor, armor))
+	do
 	{
-		display(armor);
-	}
-	else
-	{
-		cout << "Not found." << endl;
-	}
+		cout << "Enter Primary Key: ";
+		getline(cin, pkey);
+		A2.setCodename(pkey);
+		if (bst.getEntry(A2, A1))
+		{
+			display(A1);
+		}
+		else {
+			cout << "NOT FOUND." << endl;
+		}
+	} while (A2.getCodename != "");
 
-
-	/*
-	Armors armor(key);
-
-	if (bst.getEntry(armor, armor))
-	{
-		display(armor);
-	}
-	else
-	{
-		cout << "Not found." << endl;
-	}
-	*/
 }
+*/
 
 void preOrderTraversal(TreeType& bst)
 {
