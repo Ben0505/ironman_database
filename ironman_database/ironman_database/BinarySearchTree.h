@@ -26,7 +26,7 @@ private:
 
 	// search for target node
 	BinaryNode<ItemType>* findNode(BinaryNode<ItemType>* treePtr, const ItemType& target) const;
-	BinaryNode<ItemType>* findNode1(BinaryNode<ItemType>* treePtr, const string* target) const;
+	BinaryNode<ItemType>* findNode1(BinaryNode<ItemType>* treePtr, const string target) const;
 
 	// search for the smallest node
 	BinaryNode<ItemType>* findSmallest(BinaryNode<ItemType>* treePtr) const;
@@ -41,7 +41,8 @@ public:
 	bool remove(const ItemType& anEntry);
 	// find a target node
 	bool getEntry(const ItemType& target, ItemType& returnedItem) const;
-	bool getEntry1(string item, ItemType returnedItem) ;
+	bool getEntry2(const ItemType* target, ItemType* returnedItem) const;
+	bool getEntry1(string item, ItemType* returnedItem) const;
 
 	// find the smallest node
 	bool getSmallest(ItemType& returnedItem) const;
@@ -86,7 +87,21 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType& ret
 
 //Finding entries within a tree
 template<class ItemType>
-bool BinarySearchTree<ItemType>::getEntry1(string item, ItemType returnedItem)
+bool BinarySearchTree<ItemType>::getEntry2(const ItemType* anEntry, ItemType* returnedItem) const
+{
+	BinaryNode<ItemType>* newNodePtr = findNode(this->rootPtr, anEntry);
+
+	if (newNodePtr)
+	{
+		returnedItem = newNodePtr->getItem();
+		return true;
+	}
+	return false;
+}
+
+//Finding entries within a tree
+template<class ItemType>
+bool BinarySearchTree<ItemType>::getEntry1(string item, ItemType* returnedItem) const
 {
 	BinaryNode<ItemType>* newNodePtr = findNode1(this->rootPtr, item);
 
@@ -249,7 +264,7 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::findNode(BinaryNode<ItemType>*
 //Implementation for the search operation
 template<class ItemType>
 BinaryNode<ItemType>* BinarySearchTree<ItemType>::findNode1(BinaryNode<ItemType>* nodePtr,
-	const string* target) const
+	const string target) const
 {
 	while (nodePtr)
 	{

@@ -80,6 +80,7 @@ public:
 		return out;
 	}
 	
+	
 	friend istream& getline (istream& in, Armors* armor) {
 		getline(in, armor->codename);
 		getline(in, armor->armorType);
@@ -95,6 +96,23 @@ public:
 		getline(in, armor->succeed);
 		return in;
 	}
+	
+
+	/*friend istream& getline(istream& in, Armors armor) {
+		getline(in, armor.codename);
+		getline(in, armor.armorType);
+		getline(in, armor.creator);
+		in.ignore();
+		in >> armor.yearMade;
+		getline(in, armor.users);
+		getline(in, armor.movieAppeared);
+		getline(in, armor.currStats);
+		getline(in, armor.capabilities);
+		getline(in, armor.weapons);
+		getline(in, armor.precede);
+		getline(in, armor.succeed);
+		return in;
+	}*/
 
 };
 
