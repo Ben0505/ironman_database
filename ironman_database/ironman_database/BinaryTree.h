@@ -32,8 +32,8 @@ public:
 	void inOrder(void visit(ItemType*)) const { _inorder(visit, rootPtr); }
 	void postOrder(void visit(ItemType*)) const { _postorder(visit, rootPtr); }
 
-	void levelOrder(void visit(ItemType*)) const { _levelorder(visit, rootPtr); }
-	void printTree(void visit(ItemType*, int)) const { _print(visit, rootPtr, 0); }
+//	void levelOrder(void visit(ItemType*)) const { _levelorder(visit, rootPtr); }
+//	void printTree(void visit(ItemType*, int)) const { _print(visit, rootPtr, 0); }
 
 	// abstract functions to be implemented by derived class
 	virtual bool insert(const ItemType* newData) = 0;
@@ -49,12 +49,12 @@ private:
 	void destroyTree(BinaryNode<ItemType>* nodePtr);
 
 	// internal traverse
-	void _preorder(void visit(ItemType*), BinaryNode<ItemType>* nodePtr) const;
-	void _inorder(void visit(ItemType*), BinaryNode<ItemType>* nodePtr) const;
-	void _postorder(void visit(ItemType*), BinaryNode<ItemType>* nodePtr) const;
-	void _levelorder(void visit(ItemType*), BinaryNode<ItemType>* nodePtr) const;
+	void _preorder(void visit(ItemType*), BinaryNode<ItemType*>* nodePtr) const;
+	void _inorder(void visit(ItemType*), BinaryNode<ItemType*>* nodePtr) const;
+	void _postorder(void visit(ItemType*), BinaryNode<ItemType*>* nodePtr) const;
+	void _levelorder(void visit(ItemType*), BinaryNode<ItemType*>* nodePtr) const;
 	// internal print
-	void _print(void visit(ItemType*, int), BinaryNode<ItemType>* nodePtr, int level) const;
+	void _print(void visit(ItemType*, int), BinaryNode<ItemType*>* nodePtr, int level) const;
 
 };
 
@@ -77,88 +77,92 @@ void BinaryTree<ItemType>::destroyTree(BinaryNode<ItemType>* nodePtr)
 }
 
 //Preorder Traversal
-template<class ItemType>
-void BinaryTree<ItemType>::_preorder(void visit(ItemType*), BinaryNode<ItemType> * nodePtr) const
-{
-	if (nodePtr != 0)
-	{
-		ItemType* item = nodePtr->getItem();
-		visit(item);
-		_preorder(visit, nodePtr->getLeftPtr());
-		_preorder(visit, nodePtr->getRightPtr());
-	}
-}
+//template<class ItemType>
+//void BinaryTree<ItemType>::_preorder(void visit(ItemType*), BinaryNode<ItemType*> * nodePtr) const
+//{
+//	if (nodePtr != 0)
+//	{
+//		ItemType* item;// = nodePtr->getItem();
+//		item = new ItemType;
+//		item = nodePtr->getItem();
+//		visit(item);
+//		_preorder(visit, nodePtr->getLeftPtr());
+//		_preorder(visit, nodePtr->getRightPtr());
+//	}
+//}
 
 //Inorder Traversal
-template<class ItemType>
-void BinaryTree<ItemType>::_inorder(void visit(ItemType*), BinaryNode<ItemType> * nodePtr) const
-{
-	if (nodePtr != 0)
-	{
-		ItemType item = nodePtr->getItem();
-		_inorder(visit, nodePtr->getLeftPtr());
-		visit(item);
-		_inorder(visit, nodePtr->getRightPtr());
-	}
-}
+//template<class ItemType>
+//void BinaryTree<ItemType>::_inorder(void visit(ItemType*), BinaryNode<ItemType*> * nodePtr) const
+//{
+//	if (nodePtr != 0)
+//	{
+//		ItemType* item;// = nodePtr->getItem();
+//		item = new ItemType;
+//		item = nodePtr->getItem();
+//		_inorder(visit, nodePtr->getLeftPtr());
+//		visit(item);
+//		_inorder(visit, nodePtr->getRightPtr());
+//	}
+//}
 
 //Postorder Traversal
-template<class ItemType>
-void BinaryTree<ItemType>::_postorder(void visit(ItemType*), BinaryNode<ItemType> * nodePtr) const
-{
-	if (nodePtr != 0)
-	{
-		ItemType item = nodePtr->getItem();
-		_postorder(visit, nodePtr->getLeftPtr());
-		_postorder(visit, nodePtr->getRightPtr());
-		visit(item);
-	}
-}
+//template<class ItemType>
+//void BinaryTree<ItemType>::_postorder(void visit(ItemType*), BinaryNode<ItemType*> * nodePtr) const
+//{
+//	if (nodePtr != 0)
+//	{
+//		ItemType item = nodePtr->getItem();
+//		_postorder(visit, nodePtr->getLeftPtr());
+//		_postorder(visit, nodePtr->getRightPtr());
+//		visit(item);
+//	}
+//}
 
 
 //Level-Order Traversal
-template<class ItemType>
-void BinaryTree<ItemType>::_levelorder(void visit(ItemType*), BinaryNode<ItemType> * nodePtr) const
-{
-	if (nodePtr != 0)
-    {
-        Queue<BinaryNode<ItemType>*> q;
-        q.enqueue(nodePtr);
-        BinaryNode<ItemType> *ptr;
-
-        while (!q.isEmpty())
-        {
-            q.dequeue(ptr);
-
-            ItemType item = ptr->getItem();
-            visit(item);
-
-            if (ptr->getLeftPtr())
-            {
-                q.enqueue(ptr->getLeftPtr());
-            }
-            if (ptr->getRightPtr())
-            {
-                q.enqueue(ptr->getRightPtr());
-            }
-        }
-
-    }
-}
+//template<class ItemType>
+//void BinaryTree<ItemType>::_levelorder(void visit(ItemType*), BinaryNode<ItemType*> * nodePtr) const
+//{
+//	if (nodePtr != 0)
+//    {
+//        Queue<BinaryNode<ItemType>*> q;
+//        q.enqueue(nodePtr);
+//        BinaryNode<ItemType> *ptr;
+//
+//        while (!q.isEmpty())
+//        {
+//            q.dequeue(ptr);
+//
+//            ItemType item = ptr->getItem();
+//            visit(item);
+//
+//            if (ptr->getLeftPtr())
+//            {
+//                q.enqueue(ptr->getLeftPtr());
+//            }
+//            if (ptr->getRightPtr())
+//            {
+//                q.enqueue(ptr->getRightPtr());
+//            }
+//        }
+//
+//    }
+//}
 
 // Print helper, using pre-order traversal
-template<class ItemType>
-void BinaryTree<ItemType>::_print(void visit(ItemType*, int), BinaryNode<ItemType> * nodePtr, int level) const
-{
-	if (nodePtr != 0)
-	{
-		ItemType item = nodePtr->getItem();
-		visit(item, level);
-
-		_print(visit, nodePtr->getLeftPtr(), level + 1);
-		_print(visit, nodePtr->getRightPtr(), level + 1);
-	}
-}
+//template<class ItemType>
+//void BinaryTree<ItemType>::_print(void visit(ItemType*, int), BinaryNode<ItemType*> * nodePtr, int level) const
+//{
+//	if (nodePtr != 0)
+//	{
+//		ItemType item = nodePtr->getItem();
+//		visit(item, level);
+//
+//		_print(visit, nodePtr->getLeftPtr(), level + 1);
+//		_print(visit, nodePtr->getRightPtr(), level + 1);
+//	}
+//}
 
 #endif
 

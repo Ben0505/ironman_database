@@ -41,7 +41,7 @@ public:
 	bool remove(const ItemType& anEntry);
 	// find a target node
 	bool getEntry(const ItemType& target, ItemType& returnedItem) const;
-	bool getEntry2(const ItemType* target, ItemType* returnedItem) const;
+	bool getEntry2(const ItemType& target, ItemType& returnedItem) const;
 	bool getEntry1(string item, ItemType* returnedItem) const;
 
 	// find the smallest node
@@ -87,7 +87,7 @@ bool BinarySearchTree<ItemType>::getEntry(const ItemType& anEntry, ItemType& ret
 
 //Finding entries within a tree
 template<class ItemType>
-bool BinarySearchTree<ItemType>::getEntry2(const ItemType* anEntry, ItemType* returnedItem) const
+bool BinarySearchTree<ItemType>::getEntry2(const ItemType& anEntry, ItemType& returnedItem) const
 {
 	BinaryNode<ItemType>* newNodePtr = findNode(this->rootPtr, anEntry);
 
@@ -100,44 +100,44 @@ bool BinarySearchTree<ItemType>::getEntry2(const ItemType* anEntry, ItemType* re
 }
 
 //Finding entries within a tree
-template<class ItemType>
-bool BinarySearchTree<ItemType>::getEntry1(string item, ItemType* returnedItem) const
-{
-	BinaryNode<ItemType>* newNodePtr = findNode1(this->rootPtr, item);
-
-	if (newNodePtr)
-	{
-		returnedItem = newNodePtr->getItem();
-		return true;
-	}
-	return false;
-}
+//template<class ItemType>
+//bool BinarySearchTree<ItemType>::getEntry1(string item, ItemType* returnedItem) const
+//{
+//	BinaryNode<ItemType>* newNodePtr = findNode1(this->rootPtr, item);
+//
+//	if (newNodePtr)
+//	{
+//		returnedItem = newNodePtr->getItem();
+//		return true;
+//	}
+//	return false;
+//}
 
 // Finding the smallest entry
-template<class ItemType>
-bool BinarySearchTree<ItemType>::getSmallest(ItemType& returnedItem) const
-{
-	BinaryNode<ItemType>* newNodePtr = findSmallest(this->rootPtr);
-	if (newNodePtr)
-	{
-		returnedItem = newNodePtr->getItem();
-		return true;
-	}
-	return false;
-}
+//template<class ItemType>
+//bool BinarySearchTree<ItemType>::getSmallest(ItemType& returnedItem) const
+//{
+//	BinaryNode<ItemType>* newNodePtr = findSmallest(this->rootPtr);
+//	if (newNodePtr)
+//	{
+//		returnedItem = newNodePtr->getItem();
+//		return true;
+//	}
+//	return false;
+//}
 
 // Finding the largest entry
-template<class ItemType>
-bool BinarySearchTree<ItemType>::getLargest(ItemType& returnedItem) const
-{
-	BinaryNode<ItemType>* newNodePtr = findLargest(this->rootPtr);
-	if (newNodePtr)
-	{
-		returnedItem = newNodePtr->getItem();
-		return true;
-	}
-	return false;
-}
+//template<class ItemType>
+//bool BinarySearchTree<ItemType>::getLargest(ItemType& returnedItem) const
+//{
+//	BinaryNode<ItemType>* newNodePtr = findLargest(this->rootPtr);
+//	if (newNodePtr)
+//	{
+//		returnedItem = newNodePtr->getItem();
+//		return true;
+//	}
+//	return false;
+//}
 
 
 
@@ -287,42 +287,42 @@ BinaryNode<ItemType>* BinarySearchTree<ItemType>::findNode1(BinaryNode<ItemType>
 
 
 //Implementation for the search the smallest operation
-template<class ItemType>
-BinaryNode<ItemType>* BinarySearchTree<ItemType>::findSmallest(BinaryNode<ItemType>* nodePtr) const
-{
-	// The smallest entry is the leftmost node
-	if (nodePtr)
-	{
-		if (nodePtr->getLeftPtr())
-		{
-			return findSmallest(nodePtr->getLeftPtr());
-		}
-		else
-		{
-			return nodePtr;
-		}
-	}
-	return 0;
-}
+//template<class ItemType>
+//BinaryNode<ItemType>* BinarySearchTree<ItemType>::findSmallest(BinaryNode<ItemType>* nodePtr) const
+//{
+//	// The smallest entry is the leftmost node
+//	if (nodePtr)
+//	{
+//		if (nodePtr->getLeftPtr())
+//		{
+//			return findSmallest(nodePtr->getLeftPtr());
+//		}
+//		else
+//		{
+//			return nodePtr;
+//		}
+//	}
+//	return 0;
+//}
 
 //Implementation for the search the largest operation
-template<class ItemType>
-BinaryNode<ItemType>* BinarySearchTree<ItemType>::findLargest(BinaryNode<ItemType>* nodePtr) const
-{
-	// The largest entry is the rightmost node
-	if (nodePtr)
-	{
-		if (nodePtr->getRightPtr())
-		{
-			return findLargest(nodePtr->getRightPtr());
-		}
-		else
-		{
-			return nodePtr;
-		}
-	}
-	return 0;
-}
+//template<class ItemType>
+//BinaryNode<ItemType>* BinarySearchTree<ItemType>::findLargest(BinaryNode<ItemType>* nodePtr) const
+//{
+//	// The largest entry is the rightmost node
+//	if (nodePtr)
+//	{
+//		if (nodePtr->getRightPtr())
+//		{
+//			return findLargest(nodePtr->getRightPtr());
+//		}
+//		else
+//		{
+//			return nodePtr;
+//		}
+//	}
+//	return 0;
+//}
 
 
 #endif

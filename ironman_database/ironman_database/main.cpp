@@ -409,61 +409,63 @@ void searchBST(TreeType& bst)
 {
 	string pkey="", skey="";
 
-	Armors* A1;
-	Armors* A2;
-	A2->setCodename("");
+	Armors A1;
+	Armors A2;
+	A2.setCodename("");
 
 	do
 	{
 		cout << "Enter Primary Key: ";
 		getline(cin, pkey);
-		A2->setCodename(pkey);
-		if (bst.getEntry2(A2, A1))
-		{
-			display(A1);
+		A2.setCodename(pkey);
+		if (A2.getCodename() != "Q") {
+			if (bst.getEntry2(A2, A1))
+			{
+				//display(A1);
+			}
+			else {
+				cout << "NOT FOUND." << endl;
+			}
 		}
-		else {
-			cout << "NOT FOUND." << endl;
-		}
-	} while (A2->getCodename != "");
+	} while (A2.getCodename() != "Q");
 
 }
 
-void preOrderTraversal(TreeType* bst)
-{
-	cout << "---------------------------------------------" << endl;
-	cout << "Pre-order:" << endl;
-	bst->preOrder(display);
-	cout << "---------------------------------------------" << endl;
-}
-
-void inOrderTraversal(TreeType* bst)
-{
-	cout << "---------------------------------------------" << endl;
-	cout << "In-order:" << endl;
-	bst->inOrder(display);
-	cout << "---------------------------------------------" << endl;
-}
-
-void postOrderTraversal(TreeType* bst)
-{
-	cout << "---------------------------------------------" << endl;
-	cout << "Post-order:" << endl;
-	bst->postOrder(display);
-	cout << "---------------------------------------------" << endl;
-}
-
-void breadthTraversal(TreeType* bst)
-{
-	cout << "---------------------------------------------" << endl;
-	cout << "Level-order:" << endl;
-	bst->levelOrder(display);
-	cout << "---------------------------------------------" << endl;
-}
+//void preOrderTraversal(TreeType* bst)
+//{
+//	cout << "---------------------------------------------" << endl;
+//	cout << "Pre-order:" << endl;
+//	bst->preOrder(display);
+//	cout << "---------------------------------------------" << endl;
+//}
+//
+//void inOrderTraversal(TreeType* bst)
+//{
+//	cout << "---------------------------------------------" << endl;
+//	cout << "In-order:" << endl;
+//	bst->inOrder(display);
+//	cout << "---------------------------------------------" << endl;
+//}
+//
+//void postOrderTraversal(TreeType* bst)
+//{
+//	cout << "---------------------------------------------" << endl;
+//	cout << "Post-order:" << endl;
+//	bst->postOrder(display);
+//	cout << "---------------------------------------------" << endl;
+//}
+//
+//void breadthTraversal(TreeType* bst)
+//{
+//	cout << "---------------------------------------------" << endl;
+//	cout << "Level-order:" << endl;
+//	bst->levelOrder(display);
+//	cout << "---------------------------------------------" << endl;
+//}
 
 void printTree(TreeType* bst)
 {
-	bst->printTree(displayTree);
+	//bst->printTree(displayTree);
 }
 
 void screenOutput()
