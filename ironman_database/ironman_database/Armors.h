@@ -59,7 +59,7 @@ public:
 	// ~Armor();
 
 	// Setters
-
+	void setCodenmae(string cn) { codename = cn; }
 
 	// Getters
 	string getCodename() const { return codename; }
@@ -79,23 +79,20 @@ public:
 		cout << "--------------------------------------------------------------------------" << endl;
 		return out;
 	}
-
-	friend istream& getline >>(istream& in, Armors* armor);
 	
-		
-	istream& getline >>(istream& in, Armors* armor) {
-		getline(in, armor.codename);
-		getline(in, armor.armorType);
-		getline(in, armor.creator);
-		in >> armor.yearMade;
+	friend istream& getline (istream& in, Armors* armor) {
+		getline(in, armor->codename);
+		getline(in, armor->armorType);
+		getline(in, armor->creator);
 		in.ignore();
-		getline(in, armor.users);
-		getline(in, armor.movieAppeared);
-		getline(in, armor.currStats);
-		getline(in, armor.capabilities);
-		getline(in, armor.weapons);
-		getline(in, armor.precede);
-		getline(in, armor.succeed);
+		in >> armor->yearMade;
+		getline(in, armor->users);
+		getline(in, armor->movieAppeared);
+		getline(in, armor->currStats);
+		getline(in, armor->capabilities);
+		getline(in, armor->weapons);
+		getline(in, armor->precede);
+		getline(in, armor->succeed);
 		return in;
 	}
 

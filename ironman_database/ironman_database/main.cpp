@@ -382,13 +382,13 @@ void insertToTree(TreeType& bst)
 	{
 		if (codename != "Q")
 		{
-			if (bst.getEntry(codename, A->getCodename))
+			if (bst.getEntry1(codename, A))
 			{
 				cout << "Armor already exist." << endl;
 			}
 			else
 			{
-				cin >> A;
+				getline(cin, A);
 				bst.insert(A);
 			}
 		}
@@ -406,8 +406,15 @@ string inputKey()
 
 void searchBST(TreeType& bst)
 {
-	string key = inputKey();
-	Armors armor(key);
+	string pkey, skey;
+
+	cout << "Enter Primary key: ";
+	//pkey = inputKey();
+	getline(cin, pkey);
+	cout << endl;
+
+	Armors armor(pkey);
+
 	if (bst.getEntry(armor, armor))
 	{
 		display(armor);
@@ -416,6 +423,20 @@ void searchBST(TreeType& bst)
 	{
 		cout << "Not found." << endl;
 	}
+
+
+	/*
+	Armors armor(key);
+
+	if (bst.getEntry(armor, armor))
+	{
+		display(armor);
+	}
+	else
+	{
+		cout << "Not found." << endl;
+	}
+	*/
 }
 
 void preOrderTraversal(TreeType& bst)
