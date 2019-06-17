@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\..\Benn%27s Inspiron 7586\source\repos\GitHub\22c_project\ironman_database\ironman_database\ironman_database\Hash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\..\..\..\Benn%27s Inspiron 7586\source\repos\GitHub\22c_project\ironman_database\ironman_database\ironman_database\BinaryNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>

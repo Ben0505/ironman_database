@@ -2,31 +2,30 @@
 
 #ifndef _BINARY_NODE
 #define _BINARY_NODE
-
-template<class ItemType>
+#include "Armors.h"
 class BinaryNode
 {
 private:
-	ItemType *             item;         // Data portion
-	BinaryNode<ItemType*>* leftPtr;		// Pointer to left child
-	BinaryNode<ItemType*>* rightPtr;		// Pointer to right child
+	Armors* armor;         // Data portion
+	BinaryNode* leftPtr;		// Pointer to left child
+	BinaryNode* rightPtr;		// Pointer to right child
 
 public:
 	// constructors
-	BinaryNode(const ItemType& anItem) { item = anItem; leftPtr = 0; rightPtr = 0; }
-	BinaryNode(const ItemType& anItem,
-		BinaryNode<ItemType*>* left,
-		BinaryNode<ItemType*>* right) {
-		item = anItem; leftPtr = left; rightPtr = right;
+	BinaryNode(Armors* anItem) { armor = anItem; leftPtr = nullptr; rightPtr = nullptr; }
+	BinaryNode(Armors* anItem,
+		BinaryNode* left,
+		BinaryNode* right) {
+		armor = anItem; leftPtr = left; rightPtr = right;
 	}
 	// accessors
-	void setItem(const ItemType& anItem) { item = anItem; }
-	void setLeftPtr(BinaryNode<ItemType*>* left) { leftPtr = left; }
-	void setRightPtr(BinaryNode<ItemType*>* right) { rightPtr = right; }
+	void setItem(Armors* anItem) { armor = anItem; }
+	void setLeftPtr(BinaryNode* left) { leftPtr = left; }
+	void setRightPtr(BinaryNode* right) { rightPtr = right; }
 	// mutators
-	ItemType getItem() const { return item; }
-	BinaryNode<ItemType*>* getLeftPtr() const { return leftPtr; }
-	BinaryNode<ItemType*>* getRightPtr() const { return rightPtr; }
+	Armors* getItem() { return armor; }
+	BinaryNode* getLeftPtr() const { return leftPtr; }
+	BinaryNode* getRightPtr() const { return rightPtr; }
 
 	bool isLeaf() const { return (leftPtr == 0 && rightPtr == 0); }
 };

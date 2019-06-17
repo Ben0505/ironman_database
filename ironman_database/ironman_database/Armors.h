@@ -67,16 +67,17 @@ public:
 	// Other functions
 
 	// Operator functions
-	friend bool operator<(const Armors& a1, const Armors& a2) { return a1.codename < a2.codename; }
-	friend bool operator>(const Armors& a1, const Armors& a2) { return a1.codename > a2.codename; }
-	friend bool operator==(const Armors& a1, const Armors& a2) { return a1.codename == a2.codename; }
-	friend ostream& operator <<(ostream& out, const Armors& armor) {
-		cout << "--------------------------------------------------------------------------" << endl;
-		out << armor.codename << ":" << armor.armorType << "\nMade by: " << armor.creator << " in " << armor.yearMade 
-			<< "\nUsers: " << armor.users << ", appeared in: " << armor.movieAppeared << "\nCurrent Status: " << armor.currStats
-			<< "\nArmor Capabilities: " << armor.capabilities << "\nWeapons: " << armor.weapons
-			<< "\nPrecede: " << armor.precede << "\tSucceed: " << armor.succeed ;
-		cout << "--------------------------------------------------------------------------" << endl;
+	/*bool operator<(Armors* a1);
+	bool operator>(Armors* a1);
+	bool operator==(Armors* a1);*/
+	
+	friend ostream& operator <<(ostream& out, const Armors* armor) {
+		out << "--------------------------------------------------------------------------" << endl 
+			<< armor->codename << ":" << armor->armorType << "\nMade by: " << armor->creator << " in " << armor->yearMade
+			<< "\nUsers: " << armor->users << ", appeared in: " << armor->movieAppeared << "\nCurrent Status: " << armor->currStats
+			<< "\nArmor Capabilities: " << armor->capabilities << "\nWeapons: " << armor->weapons
+			<< "\nPrecede: " << armor->precede << "\tSucceed: " << armor->succeed << endl
+			<< "--------------------------------------------------------------------------" << endl;
 		return out;
 	}
 	
@@ -85,8 +86,8 @@ public:
 		getline(in, armor->codename);
 		getline(in, armor->armorType);
 		getline(in, armor->creator);
-		in.ignore();
 		in >> armor->yearMade;
+		in.ignore();
 		getline(in, armor->users);
 		getline(in, armor->movieAppeared);
 		getline(in, armor->currStats);
@@ -115,6 +116,21 @@ public:
 	}*/
 
 };
+
+//bool Armors::operator<(Armors* a1)
+//{
+//	return a1->codename < this->codename;
+//}
+//
+//bool Armors::operator>(Armors* a1) 
+//{ 
+//	return a1->codename > this->codename; 
+//}
+//
+//bool Armors::operator==(Armors* a1) 
+//{ 
+//	return a1->codename == this->codename; 
+//}
 
 #endif
 #pragma once
