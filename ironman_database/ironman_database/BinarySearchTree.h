@@ -15,7 +15,7 @@ private:
 	BinaryNode* _insert(BinaryNode* nodePtr, BinaryNode* newNode);
 
 	// internal remove node: locate and delete target node under nodePtr subtree
-	BinaryNode* _remove(BinaryNode* nodePtr, const Armors* target, bool& success);
+	BinaryNode* _remove(BinaryNode* nodePtr, Armors* target, bool& success);
 
 	// delete target node from tree, called by internal remove node
 	BinaryNode* deleteNode(BinaryNode* targetNodePtr);
@@ -36,7 +36,7 @@ public:
 	// insert a node at the correct location
 	bool insert(Armors* newEntry);
 	// remove a node if found
-	bool remove(const Armors* anEntry);
+	bool remove(Armors* anEntry);
 	// find a target node
 	bool getEntry(Armors* target, Armors*& returnedItem) const;
 
@@ -62,7 +62,7 @@ bool BinarySearchTree::insert(Armors* newentry)
 }
 
 //Removing items within a tree
-bool BinarySearchTree::remove(const Armors* target)
+bool BinarySearchTree::remove(Armors* target)
 {
 	bool isSuccessful = false;
 	this->rootPtr = _remove(this->rootPtr, target, isSuccessful);
@@ -148,22 +148,31 @@ BinaryNode* BinarySearchTree::_insert(BinaryNode* nodePtr,
 
 //Implementation of the remove operation
 BinaryNode* BinarySearchTree::_remove(BinaryNode* nodePtr,
-	const Armors* target,
+	Armors* target,
 	bool& success)
 
 {
+	Armors* rootItem = nodePtr->getItem();
+	cout << endl;
 	if (nodePtr == 0)
 	{
 		success = false;
 		return 0;
 	}
-	if (nodePtr->getItem() > target)
+	if (rootItem->getCodename() > target->getCodename())
+	{
 		nodePtr->setLeftPtr(_remove(nodePtr->getLeftPtr(), target, success));
-	else if (nodePtr->getItem() < target)
+
+	}
+	else if (rootItem->getCodename() < target->getCodename())
+	{
 		nodePtr->setRightPtr(_remove(nodePtr->getRightPtr(), target, success));
+	}
 	else
 	{
+
 		nodePtr = deleteNode(nodePtr);
+
 		success = true;
 	}
 	return nodePtr;

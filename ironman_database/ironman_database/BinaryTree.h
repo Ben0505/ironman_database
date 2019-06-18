@@ -30,7 +30,7 @@ public:
 	void _breadthF(void visit(Armors*)) const;
 	// abstract functions to be implemented by derived class
 	virtual bool insert(Armors* newData) = 0;
-	//virtual bool remove(const Armors * data) = 0;
+	virtual bool remove(Armors * data) = 0;
 	//virtual bool getEntry(const Armors * anEntry, Armors *& returnedItem) const = 0;
 
 	// search for the smallest

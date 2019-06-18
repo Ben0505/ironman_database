@@ -24,7 +24,8 @@ void insertToTree(TreeType& bst);	// ADD
 void delData(TreeType& bst);
 
 // search
-void searchBST(TreeType& bst);
+void searchBSTp(TreeType& bst);
+void searchBSTs(TreeType& bst);
 
 // print list
 //void preOrderTraversal(TreeType& bst);
@@ -177,9 +178,10 @@ void searchSubmenu(TreeType& bst)
 	switch (y)
 	{
 	case 1: // search by primary key function
-		searchBST(bst);
+		searchBSTp(bst);
 		break;
 	case 2: // search by secondary key function
+		searchBSTs(bst);
 		break;
 	case 0: menu();
 		processChoice(bst);
@@ -369,12 +371,94 @@ void insertToTree(TreeType& bst)
 	A = new Armors(codename, armorType, creator, yearMade, users, movieAppeared, currStats, capabilities, weapons, precede, succeed);
 	bst.insert(A);
 
+	/*
+	ofstream outFile;
+	outFile.open("armors.txt", ios::app);
+
+	outFile << codename << ';' << armorType << ';' << creator << ';' << yearMade << ";" << users << ';' << movieAppeared << ';' << currStats << ';' << capabilities << ";" << weapons << ";" << precede << ";" << succeed << endl;
+	outFile.close();
+
+	
+		while (codename != "Q")
+		{
+			if (codename != "Q")
+			{
+				if (bst.getEntry1(codename, A))
+				{
+					cout << "Armor already exist." << endl;
+				}
+				else
+				{
+					getline(cin, A);
+					bst.insert(A);
+				}
+			}
+		}*/
+
 	menu();
 	processChoice(bst);
 }
 
+// search by primarky key
+void searchBSTp(TreeType& bst)
+{
+	//string key = "";
 
-void searchBST(TreeType& bst)
+	//Armors* A1;
+	//A1 = new Armors;
+	//Armors* A2;
+	//A2 = new Armors;
+	//A2->setCodename("");
+
+	//
+	//cout << "Search by:" << endl;
+	//key = inputKey();
+	//A2->setCodename(key);
+	//if (A2->getCodename() != "Q") {
+	//	if (bst.getEntry(A2, A1))
+	//	{
+	//		// FOUND!
+	//		searchBSTp(bst);
+	//	}
+	//	else {
+	//		cout << "NOT FOUND." << endl;
+	//		searchBSTp(bst);
+	//	}
+	//}
+	//else { menu(); processChoice(bst); }
+
+	string key = "";
+
+	Armors* A1;
+	A1 = new Armors;
+	Armors* A2;
+	A2 = new Armors;
+	A2->setCodename("");
+
+	//do {
+	cout << "Search by: ";
+	cin >> key;
+	A2->setCodename(key);
+	//cout << "--userinput : " << key << "\t A2 codename : " << A2->getCodename() << " --" << endl;
+	if (A2->getCodename() == key) {
+		if (bst.getEntry(A2, A1) == true)
+		{
+			cout << "FOUND." << endl;
+			menu();
+			processChoice(bst);
+		}
+		else {
+			cout << "NOT FOUND." << endl;
+			//break;
+		}
+	}
+	//} while (A2->getCodename() != key);
+
+
+}
+
+// Search for secondary key
+void searchBSTs(TreeType& bst)
 {
 	string key = "";
 
@@ -392,11 +476,11 @@ void searchBST(TreeType& bst)
 		if (bst.getEntry(A2, A1))
 		{
 			// FOUND!
-			searchBST(bst);
+			searchBSTs(bst);
 		}
 		else {
 			cout << "NOT FOUND." << endl;
-			searchBST(bst);
+			searchBSTs(bst);
 		}
 	}
 	else { menu(); processChoice(bst); }
@@ -410,19 +494,23 @@ void delData(TreeType& bst)
 
 	Armors* A1;
 	A1 = new Armors;
-	A1->setCodename("");
 
-	cout << "Delete data" << endl;
+	cout << "Delete data: ";
 	key = inputKey();
 	A1->setCodename(key);
 
-	if (bst.remove(A1))
+	cout << "A1: " << A1->getCodename() << endl;
+
+	if (bst.remove(A1) == true)
 	{
 		cout << key << " removed." << endl;
+		menu();
+		processChoice(bst);
 	}
 	else {
-		cout << key << " doesn't exists. \n\n";
-		delData(bst);
+		cout << key << " doesn't exists." << endl;
+		menu();
+		processChoice(bst);
 	}
 
 }
