@@ -26,11 +26,6 @@ private:
 	// search for target node
 	BinaryNode* findNode(BinaryNode* treePtr, Armors* target) const;
 
-	//// search for the smallest node
-	//BinaryNode<ItemType>* findSmallest(BinaryNode<ItemType>* treePtr) const;
-
-	//// search for the largest node
-	//BinaryNode<ItemType>* findLargest(BinaryNode<ItemType>* treePtr) const;
 
 public:
 	// insert a node at the correct location
@@ -39,11 +34,6 @@ public:
 	bool remove(Armors* anEntry);
 	// find a target node
 	bool getEntry(Armors* target, Armors*& returnedItem) const;
-
-	//// find the smallest node
-	//bool getSmallest(ItemType& returnedItem) const;
-	//// find the largest node
-	//bool getLargest(ItemType& returnedItem) const;
 
 };
 
@@ -81,38 +71,10 @@ bool BinarySearchTree::getEntry(Armors* anEntry, Armors*& returnedItem) const
 	if (newNodePtr != NULL)
 	{
 		returnedItem = newNodePtr->getItem();
-		cout << returnedItem << endl;
 		return true;
 	}
 	return false;
 }
-
-//
-//// Finding the smallest entry
-//template<class ItemType>
-//bool BinarySearchTree<ItemType>::getSmallest(ItemType& returnedItem) const
-//{
-//	BinaryNode<ItemType>* newNodePtr = findSmallest(this->rootPtr);
-//	if (newNodePtr)
-//	{
-//		returnedItem = newNodePtr->getItem();
-//		return true;
-//	}
-//	return false;
-//}
-//
-//// Finding the largest entry
-//template<class ItemType>
-//bool BinarySearchTree<ItemType>::getLargest(ItemType& returnedItem) const
-//{
-//	BinaryNode<ItemType>* newNodePtr = findLargest(this->rootPtr);
-//	if (newNodePtr)
-//	{
-//		returnedItem = newNodePtr->getItem();
-//		return true;
-//	}
-//	return false;
-//}
 
 
 //////////////////////////// private functions ////////////////////////////////////////////
@@ -235,123 +197,41 @@ BinaryNode* BinarySearchTree::findNode(BinaryNode* nodePtr,
 {
 	Armors* rootItem = nodePtr->getItem();
 	//cout << "rooitem : " << rootItem->getCodename() << endl;
-	//cout<<endl;
-	while (nodePtr)
+  //cout<<endl;
+	while (nodePtr != NULL)
 	{
 		if (target->getCodename() < rootItem->getCodename())
 		{
 			//cout << "1target : " << target->getCodename() << endl;
 			//cout << "1rooitem : " << rootItem->getCodename() << endl;
 			nodePtr = nodePtr->getLeftPtr();
+			if (nodePtr == 0) { break; }
 			rootItem = nodePtr->getItem();
+
 			//cout << "1.1rooitem : " << rootItem->getCodename() << endl;
 			//cout<<endl;
 		}
 		else {
 			if (target->getCodename() > rootItem->getCodename())
 			{
-				//	cout << "2target : " << target->getCodename() << endl;
-					//cout << "2rooitem : " << rootItem->getCodename() << endl;
+				//cout << "2target : " << target->getCodename() << endl;
+				//cout << "2rooitem : " << rootItem->getCodename() << endl;
 				nodePtr = nodePtr->getRightPtr();
+				if (nodePtr == 0) { break; }
 				rootItem = nodePtr->getItem();
 				//cout << "2.2rooitem : " << rootItem->getCodename() << endl;
 				//cout<<endl;
 			}
 			else {
-				//	cout << "3rooitem : " << rootItem->getCodename() << endl;
+				//cout << "3rooitem : " << rootItem->getCodename() << endl;
+
 				return nodePtr;
 			}
 		}
 	}
 	return 0;
-
-	//Armors* rootItem = nodePtr->getItem();
-	////cout << "rooitem : " << rootItem->getCodename() << endl;
-	//while (nodePtr)
-	//{
-	//	if (target->getCodename() < rootItem->getCodename())
-	//	{
-	//		//cout << "target : " << target->getCodename() << endl;
-	//		//cout << "rooitem : " << rootItem->getCodename() << endl;
-	//		nodePtr = nodePtr->getLeftPtr();
-	//	}
-	//	else {
-	//		if (target->getCodename() > rootItem->getCodename())
-	//		{
-	//			//cout << "target : " << target->getCodename() << endl;
-	//			//cout << "rooitem : " << rootItem->getCodename() << endl;
-	//			nodePtr = nodePtr->getRightPtr();
-	//		}
-	//		else {
-	//			//cout << "rooitem : " << rootItem->getCodename() << endl;
-	//			return nodePtr;
-	//		}
-	//	}
-	//}
-	//return 0;
-
-	/*Armors* rootItem = nodePtr->getItem();
-
-	if (nodePtr == NULL)
-	{
-		return NULL;
-	}
-
-	
-	if (target->getCodename() < rootItem->getCodename())
-	{
-		nodePtr = nodePtr->getLeftPtr();
-	}
-	else {
-		if (target->getCodename() > rootItem->getCodename())
-		{
-			nodePtr = nodePtr->getRightPtr();
-		}
-		else { return nodePtr; }
-	}*/
-	
-
-
 }
-//
-//
-////Implementation for the search the smallest operation
-//template<class ItemType>
-//BinaryNode<ItemType>* BinarySearchTree<ItemType>::findSmallest(BinaryNode<ItemType>* nodePtr) const
-//{
-//	// The smallest entry is the leftmost node
-//	if (nodePtr)
-//	{
-//		if (nodePtr->getLeftPtr())
-//		{
-//			return findSmallest(nodePtr->getLeftPtr());
-//		}
-//		else
-//		{
-//			return nodePtr;
-//		}
-//	}
-//	return 0;
-//}
-//
-////Implementation for the search the largest operation
-//template<class ItemType>
-//BinaryNode<ItemType>* BinarySearchTree<ItemType>::findLargest(BinaryNode<ItemType>* nodePtr) const
-//{
-//	// The largest entry is the rightmost node
-//	if (nodePtr)
-//	{
-//		if (nodePtr->getRightPtr())
-//		{
-//			return findLargest(nodePtr->getRightPtr());
-//		}
-//		else
-//		{
-//			return nodePtr;
-//		}
-//	}
-//	return 0;
-//}
+
 
 
 #endif

@@ -1,6 +1,7 @@
 // 22C_Project.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -13,46 +14,52 @@ using namespace std;
 typedef BinarySearchTree TreeType;
 
 // FUNCTIONS PROTOTYPE
+// reading file and building bst
+void fileInput(string filename, TreeType& bst);
+
 // menus
 void menu();
 void searchSubmenu(TreeType& bst);
 void listSubmenu(TreeType& bst);
 void processChoice(TreeType& bst);
-
 string inputKey();
-void insertToTree(TreeType& bst);	// ADD
-void delData(TreeType& bst);
 
-// search
-void searchBSTp(TreeType& bst);
-void searchBSTs(TreeType& bst);
+void insertToTree(TreeType& bst);	// ADD data
+void delData(TreeType& bst);		// DELETE data
+
+// search data
+void searchBSTp(TreeType& bst);		// by primary key
+void searchBSTs(TreeType& bst);		// by secondary key
 
 // print list
-//void preOrderTraversal(TreeType& bst);
-//void inOrderTraversal(TreeType& bst);
-//void postOrderTraversal(TreeType& bst);
-//void breadthTraversal(TreeType& bst);
-//void printTree(TreeType& bst);
-
-void fileInput(string filename, TreeType& bst);
+void preOrderTraversal(TreeType& bst);
+void inOrderTraversal(TreeType& bst);
+void postOrderTraversal(TreeType& bst);
+void breadthTraversal(TreeType& bst);
+void printTree(TreeType& bst);
 
 
-void screenOutput();
 
 // display function to pass to BST print function
 void display(Armors* item)
 {
 	cout << item << endl;
 }
-//void displayTree(Armors* item, int level)
-//{
-//	// print 'level'  TABs to make indention
-//	for (int i = 0; i < level; ++i)
-//	{
-//		cout << "\t";
-//	}
-//	cout << "Level " << level + 1 << ". " << item << endl;
-//}
+
+void displayCodenames(Armors* item)
+{
+	cout << right << setw(20) << item->getCodename() << " -" << item->getType() << endl ;
+}
+
+void displayTree(Armors* item, int level)
+{
+	// print 'level'  TABs to make indention
+	for (int i = 0; i < level; ++i)
+	{
+		cout << "\t";
+	}
+	cout << "Level " << level + 1 << ". " << item << endl;
+}
 
 
 int main()
@@ -67,13 +74,6 @@ int main()
 
 	menu();
 	processChoice(bstP);
-
-	/*Hash H(1);
-	H.insertItem(A);
-	string del = "Sneaky";
-	H.deleteItem(del);
-	H.searchByP("Sneaky");
-	H.stat();*/
 	
 }
 
@@ -131,6 +131,7 @@ void fileInput(string filename, TreeType& bst)
 	infile.close();
 }
 
+
 void menu()
 {
 	/*
@@ -151,10 +152,11 @@ void menu()
 	0 : Quit / Back to main menu
 	*/
 
-	cout << "MENU: " << endl;
+
+	cout << "                        MENU                        \n";
 	cout << "======================================================" << endl;
-	cout << "1 : Add menu data" << endl;
-	cout << "2 : Delete data" << endl;
+	cout << "1 : Add armor" << endl;
+	cout << "2 : Delete armor" << endl;
 	cout << "3 : Search" << endl;
 	cout << "4 : Show list" << endl;
 	cout << "0 : Quit" << endl;
@@ -192,7 +194,6 @@ void searchSubmenu(TreeType& bst)
 		cout << "----------------" << endl;
 		searchSubmenu(bst);
 	}
-
 }
 
 
@@ -227,16 +228,16 @@ void listSubmenu(TreeType& bst)
 		//printTree(bst);
 		break;
 	case 5: // list printed as level-order
-		//breadthTraversal(bst);
+		breadthTraversal(bst);
 		break;
 	case 6: // list printed as pre-order
-		//preOrderTraversal(bst);
+		preOrderTraversal(bst);
 		break;
 	case 7: // list printed as in-order
-		//inOrderTraversal(bst);
+		inOrderTraversal(bst);
 		break;
 	case 8: // list printed as post-order
-		//postOrderTraversal(bst);
+		postOrderTraversal(bst);
 		break;
 	case 0: menu();
 		processChoice(bst);
@@ -328,18 +329,24 @@ void processChoice(TreeType& bst)
 string inputKey()
 {
 	string key;
-	cout << "Input a key: ";
+	cout << "Input a key ('0' - main menu) : ";
 	getline(cin, key);
 	return key;
 }
 
 
 ///**********************************************************************
-// Insert manager: insert data of college by the user into the list
-// Input Parameter: list
+// Insert manager: 
+//		insert data of armor by the user into the list
 // **********************************************************************/
 void insertToTree(TreeType& bst)
 {
+	Armors* A1;
+	A1 = new Armors;
+	Armors* A2;
+	A2 = new Armors;
+	A2->setCodename("");
+
 	string codename = "";
 	string	armorType = "";
 	string	creator = "";
@@ -352,33 +359,45 @@ void insertToTree(TreeType& bst)
 	string	precede = "";
 	string	succeed = "";
 
-	cout << "\n Insert Data \n";
-	cout << "===============\n";
-	cout << "Codename: ";	getline(cin, codename);
-	cout << "armorType: ";	getline(cin, armorType);
-	cout << "creator: ";	getline(cin, creator);
-	cout << "yearMade: ";	cin >> yearMade;
-	cin.ignore();
-	cout << "users: ";		getline(cin, users);
-	cout << "movieAppeared: ";	getline(cin, movieAppeared);
-	cout << "currStats: ";	getline(cin, currStats);
-	cout << "capabilities: ";	getline(cin, capabilities);
-	cout << "weapons: ";	getline(cin, weapons);
-	cout << "precede: ";	getline(cin, precede);
-	cout << "succeed: ";	getline(cin, succeed);
+	cout << "\n                     INSERT                         \n";
+	cout << "======================================================\n";
+	cout << "       Codename: ";	getline(cin, codename);
 
-	Armors* A;
-	A = new Armors(codename, armorType, creator, yearMade, users, movieAppeared, currStats, capabilities, weapons, precede, succeed);
-	bst.insert(A);
 
-	/*
-	ofstream outFile;
-	outFile.open("armors.txt", ios::app);
+	A2->setCodename(codename);
+	if (bst.getEntry(A2, A1))
+	{
+		cout << codename << " already in the system." << endl;
+		menu();
+		processChoice(bst);
+	}
+	else {	
+		cout << "      Armor type: ";	getline(cin, armorType);
+		cout << "         Creator: ";	getline(cin, creator);
+		cout << "       Year made: ";	cin >> yearMade;
+		cin.ignore();
+		cout << "           Users: ";		getline(cin, users);
+		cout << "  Movie appeared: ";	getline(cin, movieAppeared);
+		cout << " Currrent Status: ";	getline(cin, currStats);
+		cout << "    Capabilities: ";	getline(cin, capabilities);
+		cout << "         Weapons: ";	getline(cin, weapons);
+		cout << "         Precede: ";	getline(cin, precede);
+		cout << "         Succeed: ";	getline(cin, succeed);
+		cout << endl;
 
-	outFile << codename << ';' << armorType << ';' << creator << ';' << yearMade << ";" << users << ';' << movieAppeared << ';' << currStats << ';' << capabilities << ";" << weapons << ";" << precede << ";" << succeed << endl;
-	outFile.close();
+		Armors* A;
+		A = new Armors(codename, armorType, creator, yearMade, users, movieAppeared, currStats, capabilities, weapons, precede, succeed);
+		bst.insert(A);
 
-	
+		// Write to file
+		/*
+		ofstream outFile;
+		outFile.open("armors.txt", ios::app);
+
+		outFile << codename << ';' << armorType << ';' << creator << ';' << yearMade << ";" << users << ';' << movieAppeared << ';' << currStats << ';' << capabilities << ";" << weapons << ";" << precede << ";" << succeed << endl;
+		outFile.close();
+
+
 		while (codename != "Q")
 		{
 			if (codename != "Q")
@@ -394,6 +413,7 @@ void insertToTree(TreeType& bst)
 				}
 			}
 		}*/
+	}
 
 	menu();
 	processChoice(bst);
@@ -402,31 +422,6 @@ void insertToTree(TreeType& bst)
 // search by primarky key
 void searchBSTp(TreeType& bst)
 {
-	//string key = "";
-
-	//Armors* A1;
-	//A1 = new Armors;
-	//Armors* A2;
-	//A2 = new Armors;
-	//A2->setCodename("");
-
-	//
-	//cout << "Search by:" << endl;
-	//key = inputKey();
-	//A2->setCodename(key);
-	//if (A2->getCodename() != "Q") {
-	//	if (bst.getEntry(A2, A1))
-	//	{
-	//		// FOUND!
-	//		searchBSTp(bst);
-	//	}
-	//	else {
-	//		cout << "NOT FOUND." << endl;
-	//		searchBSTp(bst);
-	//	}
-	//}
-	//else { menu(); processChoice(bst); }
-
 	string key = "";
 
 	Armors* A1;
@@ -435,24 +430,23 @@ void searchBSTp(TreeType& bst)
 	A2 = new Armors;
 	A2->setCodename("");
 
-	//do {
-	cout << "Search by: ";
-	cin >> key;
+	
+	cout << "Search by PRIMARY key:" << endl;
+	key = inputKey();
 	A2->setCodename(key);
-	//cout << "--userinput : " << key << "\t A2 codename : " << A2->getCodename() << " --" << endl;
-	if (A2->getCodename() == key) {
-		if (bst.getEntry(A2, A1) == true)
+	if (A2->getCodename() != "0") {
+		if (bst.getEntry(A2, A1))
 		{
-			cout << "FOUND." << endl;
-			menu();
-			processChoice(bst);
+			display(A1);
+			searchBSTp(bst);
 		}
 		else {
-			cout << "NOT FOUND." << endl;
-			//break;
+			cout << key << " not found." << endl;
+			searchBSTp(bst);
 		}
 	}
-	//} while (A2->getCodename() != key);
+	else { cout << endl; menu(); processChoice(bst); }
+
 
 
 }
@@ -469,10 +463,10 @@ void searchBSTs(TreeType& bst)
 	A2->setCodename("");
 
 	
-	cout << "Search by:" << endl;
+	cout << "Search by SECONDARY key:" << endl;
 	key = inputKey();
 	A2->setCodename(key);
-	if (A2->getCodename() != "Q") {
+	if (A2->getCodename() != "0") {
 		if (bst.getEntry(A2, A1))
 		{
 			// FOUND!
@@ -488,6 +482,10 @@ void searchBSTs(TreeType& bst)
 
 }
 
+///**********************************************************************
+// delData: 
+//	delete data based on the codename that the user input.
+// **********************************************************************/
 void delData(TreeType& bst)
 {
 	string key = "";
@@ -496,14 +494,24 @@ void delData(TreeType& bst)
 	A1 = new Armors;
 
 	cout << "Delete data: ";
+	cout << "\n                             DELETE                                    \n";
+	cout << "===========================================================================" << endl;
+	bst.inOrder(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl;
+	
 	key = inputKey();
 	A1->setCodename(key);
 
-	cout << "A1: " << A1->getCodename() << endl;
+	if (key == "0")
+	{
+		cout << endl;
+		menu();
+		processChoice(bst);
+	}
 
 	if (bst.remove(A1) == true)
 	{
-		cout << key << " removed." << endl;
+		cout << key << " removed. \n\n";
 		menu();
 		processChoice(bst);
 	}
@@ -516,82 +524,46 @@ void delData(TreeType& bst)
 }
 
 
-//void preOrderTraversal(TreeType* bst)
-//{
-//	cout << "---------------------------------------------" << endl;
-//	cout << "Pre-order:" << endl;
-//	bst->preOrder(display);
-//	cout << "---------------------------------------------" << endl;
-//}
+void preOrderTraversal(TreeType& bst)
+{
+	cout << "PRE-ORDER:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	bst.preOrder(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bst);
+}
+
+void inOrderTraversal(TreeType& bst)
+{
+	cout << "IN-ORDER:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	bst.inOrder(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bst);
+}
+
+void postOrderTraversal(TreeType& bst)
+{
+	cout << "POST-ORDER:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	bst.postOrder(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bst);
+}
+
+void breadthTraversal(TreeType& bst)
+{
+	cout << "LEVEL-ORDER:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	bst._breadthF(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bst);
+}
 //
-//void inOrderTraversal(TreeType* bst)
+//void printTree(TreeType& bst)
 //{
-//	cout << "---------------------------------------------" << endl;
-//	cout << "In-order:" << endl;
-//	bst->inOrder(display);
-//	cout << "---------------------------------------------" << endl;
-//}
-//
-//void postOrderTraversal(TreeType* bst)
-//{
-//	cout << "---------------------------------------------" << endl;
-//	cout << "Post-order:" << endl;
-//	bst->postOrder(display);
-//	cout << "---------------------------------------------" << endl;
-//}
-//
-//void breadthTraversal(TreeType* bst)
-//{
-//	cout << "---------------------------------------------" << endl;
-//	cout << "Level-order:" << endl;
-//	bst->levelOrder(display);
-//	cout << "---------------------------------------------" << endl;
-//}
-//
-//void printTree(TreeType* bst)
-//{
-//	bst->printTree(displayTree);
+//	bst.printTree(displayTree);
 //}
 
-void screenOutput()
-{
-	// DOESNT WORK ON FILE INPUT, CAN BE USED FOR SCREEN OUTPUT
-	/*
-	// read the amor user into armor vector
-	getline(infile, item, ',');
-	users.push_back(item);
-	getline(infile, item, ';');
-	users.push_back(item);
-	// CAPBILITIES
-	// (1) read from the file until the ';' as one whole string,
-	// (2) and the split them into pieces of string and then push them into its vector
-	getline(infile, item, ';'); // (1)
-	size_t comma = item.find_first_of(','); // first comma
-	size_t nextComma = item.find_first_of(',', comma + 1); // next comma
-	item2 = item.substr(0, comma); // this line onwards is (2)
-	capbl.push_back(item2);
-	while (comma != string::npos)
-	{
-		item2 = item.substr(comma + 1, nextComma - comma - 1);
-		capbl.push_back(item2);
-		comma = nextComma;
-		nextComma = item.find_first_of(',', nextComma + 1);
-	}
-	// WEAPONS
-	// (1) read from the file until the ';' as one whole string,
-	// (2) and the split them into pieces of string and then push them into its vector
-	getline(infile, item, ';'); // (1)
-	comma = item.find_first_of(','); // first comma
-	nextComma = item.find_first_of(',', comma + 1); // next comma
-	item2 = item.substr(0, comma); // this line onwards is (2)
-	weap.push_back(item2);
-	while (comma != string::npos)
-	{
-		item2 = item.substr(comma + 1, nextComma - comma - 1);
-		weap.push_back(item2);
-		comma = nextComma;
-		nextComma = item.find_first_of(',', nextComma + 1);
-	}
-	*/
-}
+
 

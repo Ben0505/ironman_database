@@ -63,6 +63,7 @@ public:
 
 	// Getters
 	string getCodename() { return codename; }
+	string getType() { return armorType; }
 
 	// Other functions
 
@@ -72,11 +73,18 @@ public:
 	bool operator==(Armors* a1);*/
 	
 	friend ostream& operator <<(ostream& out, const Armors* armor) {
-		out << "--------------------------------------------------------------------------" << endl 
-			<< armor->codename << ":" << armor->armorType << "\nMade by: " << armor->creator << " in " << armor->yearMade
-			<< "\nUsers: " << armor->users << ", appeared in: " << armor->movieAppeared << "\nCurrent Status: " << armor->currStats
-			<< "\nArmor Capabilities: " << armor->capabilities << "\nWeapons: " << armor->weapons
-			<< "\nPrecede: " << armor->precede << "\tSucceed: " << armor->succeed << endl
+		out << "--------------------------------------------------------------------------" << endl
+			<< "            Codename:  " << armor->codename << endl
+			<< "          Armor Type: " << armor->armorType << endl
+			<< "             Made by: " << armor->creator << endl
+			<< "           Year Made:  " << armor->yearMade << endl
+			<< "               Users: " << armor->users << endl
+			<< "     Movies Appeared: " << armor->movieAppeared << endl
+			<< "      Current Status: " << armor->currStats << endl
+			<< "  Armor Capabilities: " << armor->capabilities << endl
+			<< "             Weapons: " << armor->weapons << endl
+			<< "             Precede: " << armor->precede  << endl
+			<< "             Succeed: " << armor->succeed << endl
 			<< "--------------------------------------------------------------------------" << endl;
 		return out;
 	}
