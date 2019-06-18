@@ -20,7 +20,7 @@ void listSubmenu(TreeType& bst);
 void processChoice(TreeType& bst);
 
 string inputKey();
-//void insertToTree(TreeType& bst);	// ADD
+void insertToTree(TreeType& bst);	// ADD
 void delData(TreeType& bst);
 
 // search
@@ -171,6 +171,7 @@ void searchSubmenu(TreeType& bst)
 	cout << "0 : Back to menu " << endl;
 	cout << "User choice: ";
 	cin >> y;
+	cin.ignore();
 	cout << endl;
 
 	switch (y)
@@ -209,6 +210,7 @@ void listSubmenu(TreeType& bst)
 	cout << "0 : Back to menu " << endl;
 	cout << "User choice: ";
 	cin >> y;
+	cin.ignore();
 	cout << endl;
 
 	switch (y)
@@ -256,14 +258,16 @@ void processChoice(TreeType& bst)
 	int x = 0;
 	cout << "User input: ";
 	cin >> x;
+	cin.ignore();
 	cout << endl;
 
 	switch (x)
 	{
 	case 1: // add function
-		// insertToTree(bst);
+		insertToTree(bst);
 		break;
 	case 2: // delete function
+		delData(bst);
 		break;
 	case 3:
 		searchSubmenu(bst);
@@ -328,25 +332,50 @@ string inputKey()
 }
 
 
+///**********************************************************************
+// Insert manager: insert data of college by the user into the list
+// Input Parameter: list
+// **********************************************************************/
+void insertToTree(TreeType& bst)
+{
+	string codename = "";
+	string	armorType = "";
+	string	creator = "";
+	int	yearMade = 0;
+	string	users = "";
+	string	movieAppeared = "";
+	string	currStats = "";
+	string	capabilities = "";
+	string	weapons = "";
+	string	precede = "";
+	string	succeed = "";
+
+	cout << "\n Insert Data \n";
+	cout << "===============\n";
+	cout << "Codename: ";	getline(cin, codename);
+	cout << "armorType: ";	getline(cin, armorType);
+	cout << "creator: ";	getline(cin, creator);
+	cout << "yearMade: ";	cin >> yearMade;
+	cin.ignore();
+	cout << "users: ";		getline(cin, users);
+	cout << "movieAppeared: ";	getline(cin, movieAppeared);
+	cout << "currStats: ";	getline(cin, currStats);
+	cout << "capabilities: ";	getline(cin, capabilities);
+	cout << "weapons: ";	getline(cin, weapons);
+	cout << "precede: ";	getline(cin, precede);
+	cout << "succeed: ";	getline(cin, succeed);
+
+	Armors* A;
+	A = new Armors(codename, armorType, creator, yearMade, users, movieAppeared, currStats, capabilities, weapons, precede, succeed);
+	bst.insert(A);
+
+	menu();
+	processChoice(bst);
+}
+
+
 void searchBST(TreeType& bst)
 {
-	/*
-	cout << "Enter Key: ";
-	string key = inputKey();
-	Armors* armor;
-	armor = new Armors;
-	armor->setCodename(key);
-
-	if (bst.getEntry(armor, A2))
-	{
-		display(armor);
-	}
-	else
-	{
-		cout << "Not found." << endl;
-		searchSubmenu(bst);
-	}*/
-
 	string key = "";
 
 	Armors* A1;
@@ -355,21 +384,23 @@ void searchBST(TreeType& bst)
 	A2 = new Armors;
 	A2->setCodename("");
 
-	do {
-		cout << "Search by:" << endl;
-		key = inputKey();
-		A2->setCodename(key);
-		cout << "--userinput : " << key << "\t A2 codename : " << A2->getCodename() << " --" << endl;
-		if (A2->getCodename() != "Q") {
-			if (bst.getEntry(A2, A1))
-			{
-				// FOUND!
-			}
-			else {
-				cout << "NOT FOUND." << endl;
-			}
+	
+	cout << "Search by:" << endl;
+	key = inputKey();
+	A2->setCodename(key);
+	if (A2->getCodename() != "Q") {
+		if (bst.getEntry(A2, A1))
+		{
+			// FOUND!
+			searchBST(bst);
 		}
-	} while (A2->getCodename() != "Q");
+		else {
+			cout << "NOT FOUND." << endl;
+			searchBST(bst);
+		}
+	}
+	else { menu(); processChoice(bst); }
+
 
 }
 
@@ -379,6 +410,7 @@ void delData(TreeType& bst)
 
 	Armors* A1;
 	A1 = new Armors;
+	A1->setCodename("");
 
 	cout << "Delete data" << endl;
 	key = inputKey();
@@ -389,7 +421,8 @@ void delData(TreeType& bst)
 		cout << key << " removed." << endl;
 	}
 	else {
-		cout << key << " doesn't exists." << endl;
+		cout << key << " doesn't exists. \n\n";
+		delData(bst);
 	}
 
 }

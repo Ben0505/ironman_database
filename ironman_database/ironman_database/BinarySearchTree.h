@@ -52,7 +52,7 @@ public:
 //Inserting items within a tree
 bool BinarySearchTree::insert(Armors* newentry)
 {
-	cout << "in insert func, Armors newentry:" << newentry->getCodename() << endl;
+	//cout << "in insert func, Armors newentry:" << newentry->getCodename() << endl;
 	BinaryNode* newnodeptr = new BinaryNode(newentry);
 	//cout << "Now Im calling _insert \n";
 
@@ -75,8 +75,8 @@ bool BinarySearchTree::getEntry(Armors* anEntry, Armors*& returnedItem) const
 {
 	BinaryNode* newNodePtr = findNode(this->rootPtr, anEntry);
 
-	cout << "A2 : " << anEntry->getCodename() << endl;
-	cout << "A1 : " << returnedItem->getCodename() << endl;
+	//cout << "A2 : " << anEntry->getCodename() << endl;
+	//cout << "A1 : " << returnedItem->getCodename() << endl;
 
 	if (newNodePtr != NULL)
 	{
@@ -131,14 +131,14 @@ BinaryNode* BinarySearchTree::_insert(BinaryNode* nodePtr,
 		Armors* newItem = newNodePtr->getItem();
 		Armors* rootItem = nodePtr->getItem();
 
-		cout << "newItem : " << newItem->getCodename() << endl;
-		cout << "rooItem : " <<rootItem->getCodename() << endl;
+		//cout << "newItem : " << newItem->getCodename() << endl;
+		//cout << "rooItem : " <<rootItem->getCodename() << endl;
 		if (newItem->getCodename() < rootItem->getCodename()) {
-			cout << newItem->getCodename() << " going to the leftnode\n";
+			//cout << newItem->getCodename() << " going to the leftnode\n";
 			nodePtr->setLeftPtr(_insert(nodePtr->getLeftPtr(), newNodePtr));
 		}
 		else {
-			cout << newItem->getCodename() << " going to the rightnode\n";
+			//cout << newItem->getCodename() << " going to the rightnode\n";
 			nodePtr->setRightPtr(_insert(nodePtr->getRightPtr(), newNodePtr));
 		}
 	}
@@ -224,57 +224,84 @@ BinaryNode* BinarySearchTree::removeLeftmostNode(BinaryNode* nodePtr,
 BinaryNode* BinarySearchTree::findNode(BinaryNode* nodePtr,
 	Armors* target) const
 {
-	/*Armors* rootItem = nodePtr->getItem();
-	cout << "rooitem : " << rootItem->getCodename() << endl;
+	Armors* rootItem = nodePtr->getItem();
+	//cout << "rooitem : " << rootItem->getCodename() << endl;
+	//cout<<endl;
 	while (nodePtr)
 	{
 		if (target->getCodename() < rootItem->getCodename())
 		{
-			cout << "target : " << target->getCodename() << endl;
-			cout << "rooitem : " << rootItem->getCodename() << endl;
+			//cout << "1target : " << target->getCodename() << endl;
+			//cout << "1rooitem : " << rootItem->getCodename() << endl;
 			nodePtr = nodePtr->getLeftPtr();
+			rootItem = nodePtr->getItem();
+			//cout << "1.1rooitem : " << rootItem->getCodename() << endl;
+			//cout<<endl;
 		}
 		else {
 			if (target->getCodename() > rootItem->getCodename())
 			{
-				cout << "target : " << target->getCodename() << endl;
-				cout << "rooitem : " << rootItem->getCodename() << endl;
+				//	cout << "2target : " << target->getCodename() << endl;
+					//cout << "2rooitem : " << rootItem->getCodename() << endl;
 				nodePtr = nodePtr->getRightPtr();
+				rootItem = nodePtr->getItem();
+				//cout << "2.2rooitem : " << rootItem->getCodename() << endl;
+				//cout<<endl;
 			}
 			else {
-				cout << "rooitem : " << rootItem->getCodename() << endl;
+				//	cout << "3rooitem : " << rootItem->getCodename() << endl;
 				return nodePtr;
 			}
 		}
 	}
-	return 0;*/
+	return 0;
 
-	Armors* rootItem = nodePtr->getItem();
+	//Armors* rootItem = nodePtr->getItem();
+	////cout << "rooitem : " << rootItem->getCodename() << endl;
+	//while (nodePtr)
+	//{
+	//	if (target->getCodename() < rootItem->getCodename())
+	//	{
+	//		//cout << "target : " << target->getCodename() << endl;
+	//		//cout << "rooitem : " << rootItem->getCodename() << endl;
+	//		nodePtr = nodePtr->getLeftPtr();
+	//	}
+	//	else {
+	//		if (target->getCodename() > rootItem->getCodename())
+	//		{
+	//			//cout << "target : " << target->getCodename() << endl;
+	//			//cout << "rooitem : " << rootItem->getCodename() << endl;
+	//			nodePtr = nodePtr->getRightPtr();
+	//		}
+	//		else {
+	//			//cout << "rooitem : " << rootItem->getCodename() << endl;
+	//			return nodePtr;
+	//		}
+	//	}
+	//}
+	//return 0;
 
-	if (nodePtr == NULL) 
+	/*Armors* rootItem = nodePtr->getItem();
+
+	if (nodePtr == NULL)
 	{
 		return NULL;
 	}
 
+	
 	if (target->getCodename() < rootItem->getCodename())
 	{
-		cout << "target : " << target->getCodename() << endl;
-		cout << "rooitem : " << rootItem->getCodename() << endl;
-		nodePtr->setLeftPtr(findNode(nodePtr->getLeftPtr, target));
-		//nodePtr = nodePtr->getLeftPtr();
+		nodePtr = nodePtr->getLeftPtr();
 	}
 	else {
 		if (target->getCodename() > rootItem->getCodename())
 		{
-			cout << "target : " << target->getCodename() << endl;
-			cout << "rooitem : " << rootItem->getCodename() << endl;
-			//nodePtr = nodePtr->getRightPtr();
+			nodePtr = nodePtr->getRightPtr();
 		}
-		else {
-			cout << "rooitem : " << rootItem->getCodename() << endl;
-			return nodePtr;
-		}
-	}
+		else { return nodePtr; }
+	}*/
+	
+
 
 }
 //
