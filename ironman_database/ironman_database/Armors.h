@@ -60,10 +60,21 @@ public:
 
 	// Setters
 	void setCodename(string cn) { codename = cn; }
+	void setArmorType(string at) { armorType = at; }
 
 	// Getters
 	string getCodename() { return codename; }
-	string getType() { return armorType; }
+	string getArmorType() { return armorType; }
+
+	string getCreator() { return creator; }
+	string getUser() { return users; }
+	int getYear() { return yearMade; }
+	string getMovie() { return movieAppeared; }
+	string getStatus() { return currStats; }
+	string getCap() { return capabilities; }
+	string getWeapon() { return weapons; }
+	string getPre() { return precede; }
+	string getSuc() { return succeed; }
 
 	// Other functions
 

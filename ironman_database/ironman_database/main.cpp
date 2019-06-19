@@ -15,7 +15,7 @@ typedef BinarySearchTree TreeType;
 
 // FUNCTIONS PROTOTYPE
 // reading file and building bst
-void fileInput(string filename, TreeType& bst);
+void fileInput(string filename, TreeType& bstp, TreeType& bsts);
 
 // menus
 void menu();
@@ -32,23 +32,36 @@ void searchBSTp(TreeType& bst);		// by primary key
 void searchBSTs(TreeType& bst);		// by secondary key
 
 // print list
+void listUnsorted(TreeType& bst);
+void listByPriKey(TreeType& bst);
+void breadthTraversal(TreeType& bst);
 void preOrderTraversal(TreeType& bst);
 void inOrderTraversal(TreeType& bst);
 void postOrderTraversal(TreeType& bst);
-void breadthTraversal(TreeType& bst);
 void printTree(TreeType& bst);
 
 
 
 // display function to pass to BST print function
-void display(Armors* item)
-{
-	cout << item << endl;
+//void display(Armors* item)
+//{
+//	cout << item << endl;
+//}
+
+void display(Armors* a) {
+	cout << "I am in display func\n";
+	cout << a->getCodename() << " " << a->getYear() << endl;
+	cout << "--------------------------------------------------------------------------" << endl;
+	cout << a->getCodename() << ":" << a->getArmorType() << "\nMade by: " << a->getCreator() << " in " << a->getYear()
+		<< "\nUsers: " << a->getUser() << ", appeared in: " << a->getMovie() << "\nCurrent Status: " << a->getStatus()
+		<< "\nArmor Capabilities: " << a->getCap() << "\nWeapons: " << a->getWeapon()
+		<< "\nPrecede: " << a->getPre() << "\tSucceed: " << a->getSuc();
+	cout << "\n--------------------------------------------------------------------------" << endl;
 }
 
 void displayCodenames(Armors* item)
 {
-	cout << right << setw(20) << item->getCodename() << " -" << item->getType() << endl ;
+	cout << right << setw(20) << item->getCodename() << " -" << item->getArmorType() << endl ;
 }
 
 void displayTree(Armors* item, int level)
@@ -69,15 +82,14 @@ int main()
 	//TreeType* bstP = 0;
 	TreeType bstP;
 	TreeType bstS;
-	fileInput(inputFileName, bstP);
-	fileInput(inputFileName, bstS);
+	fileInput(inputFileName, bstP, bstS);
 
 	menu();
 	processChoice(bstP);
 	
 }
 
-void fileInput(string filename, TreeType& bst)
+void fileInput(string filename, TreeType& bstp, TreeType& bsts)
 {
 	ifstream infile(filename);
 
@@ -125,7 +137,9 @@ void fileInput(string filename, TreeType& bst)
 		// Building BST
 		Armors* armors;
 		armors = new Armors(codename, type, creator, year, users, movie, curstat, capbl, weap, precede, succeed);
-		bst.insert(armors);
+		bstp.insert(armors);
+		bsts.insertSec(armors);
+
 
 	}
 	infile.close();
@@ -221,6 +235,7 @@ void listSubmenu(TreeType& bst)
 	case 1: // unsorted list
 		break;
 	case 2: // lsit sorted by primary key
+		listByPriKey(bst);
 		break;
 	case 3: // list sorted by secondary key
 		break;
@@ -465,16 +480,16 @@ void searchBSTs(TreeType& bst)
 	
 	cout << "Search by SECONDARY key:" << endl;
 	key = inputKey();
-	A2->setCodename(key);
-	if (A2->getCodename() != "0") {
-		if (bst.getEntry(A2, A1))
+	A2->setArmorType(key);
+	if (A2->getArmorType() != "0") {
+		if (bst.getEntrySec(A2, A1, display))
 		{
 			// FOUND!
-			searchBSTs(bst);
+			//searchBSTs(bst);
 		}
 		else {
 			cout << "NOT FOUND." << endl;
-			searchBSTs(bst);
+			//searchBSTs(bst);
 		}
 	}
 	else { menu(); processChoice(bst); }
@@ -523,10 +538,36 @@ void delData(TreeType& bst)
 
 }
 
+void listUnsorted(TreeType& bst)
+{
+	cout << "UNSORTED:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	bst.preOrder(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bst);
+}
+
+void listByPriKey(TreeType& bst)
+{
+	cout << "By PRIMARY Key:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	bst.inOrder(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bst);
+}
+
+void breadthTraversal(TreeType& bst)
+{
+	cout << "LEVEL-ORDER:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	bst._breadthF(displayCodenames);
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bst);
+}
 
 void preOrderTraversal(TreeType& bst)
 {
-	cout << "PRE-ORDER:" << endl;
+	cout << "PRE-ORDER (Same as PRE-ORDER):" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
 	bst.preOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
@@ -535,7 +576,7 @@ void preOrderTraversal(TreeType& bst)
 
 void inOrderTraversal(TreeType& bst)
 {
-	cout << "IN-ORDER:" << endl;
+	cout << "IN-ORDER (Same as PRIMARY Key):" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
 	bst.inOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
@@ -551,14 +592,6 @@ void postOrderTraversal(TreeType& bst)
 	menu(); processChoice(bst);
 }
 
-void breadthTraversal(TreeType& bst)
-{
-	cout << "LEVEL-ORDER:" << endl;
-	cout << "---------------------------------------------------------------------------" << endl;
-	bst._breadthF(displayCodenames);
-	cout << "---------------------------------------------------------------------------" << endl << endl;
-	menu(); processChoice(bst);
-}
 //
 //void printTree(TreeType& bst)
 //{
