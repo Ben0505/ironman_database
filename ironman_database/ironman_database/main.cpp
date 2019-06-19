@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "BinarySearchTree.h"
+#include "Hash.h"
+#include "List.h"
 
 using namespace std;
 
@@ -14,35 +16,45 @@ using namespace std;
 typedef BinarySearchTree TreeType;
 
 // FUNCTIONS PROTOTYPE
-// reading file and building bst
-void fileInput(string filename, TreeType& bstp, TreeType& bsts);
 
-// menus
+/* Hash functions */
+void insertHashManager(Hash& H);
+void deleteHashManager(Hash& H);
+void searchHashManager(Hash& H, void visit(Armors*));
+void inputValid(string& returnItem);
+void hashInput(string filename, Hash& H);
+void printTree(TreeType& bstp, TreeType& bsts);
+
+/* reading file and building BST */
+void fileInput(string filename, TreeType& bstp, TreeType& bsts);	// read data from txt file and insert to tree
+
+/* menus & sub-menus */
 void menu();
-void searchSubmenu(TreeType& bst);
-void listSubmenu(TreeType& bst);
-void processChoice(TreeType& bst);
-string inputKey();
+void searchSubmenu(TreeType& bstp, TreeType& bsts);		// show search sub-menu when user choose to search
+void listSubmenu(TreeType& bstp, TreeType& bst);		// show list sub-menu when user choose to print list
+void processChoice(TreeType& bstp, TreeType& bsts);		// this will execute which menu options that the user choose
+string inputKey();	// prompt user to enter key for menu & submenu
 
-void insertToTree(TreeType& bst);	// ADD data
-void delData(TreeType& bst);		// DELETE data
+/* insert and delete data from tree */
+void insertToTree(TreeType& bstp, TreeType& bsts);	// ADD data
+void delData(TreeType& bstp, TreeType& bsts);		// DELETE data
 
-// search data
-void searchBSTp(TreeType& bst);		// by primary key
-void searchBSTs(TreeType& bst);		// by secondary key
+/* SEARCH data */
+void searchBSTp(TreeType& bstp, TreeType& bsts);	// by primary key
+void searchBSTs(TreeType& bstp, TreeType& bsts);	// by secondary key
 
-// print list
-void listUnsorted(TreeType& bst);
-void listByPriKey(TreeType& bst);
-void breadthTraversal(TreeType& bst);
-void preOrderTraversal(TreeType& bst);
-void inOrderTraversal(TreeType& bst);
-void postOrderTraversal(TreeType& bst);
-void printTree(TreeType& bst);
+/* print LIST functions */
+void listUnsorted(TreeType& bstp, TreeType& bsts);			// print unsorted list
+void listByPriKey(TreeType& bstp, TreeType& bsts);			// print list, sorted by primary key
+//void listBySec(TreeType& bstp, TreeType& bsts);			// print list, sorted by secondary key
+void breadthTraversal(TreeType& bstp, TreeType& bsts);		// print all armors codename with its type by breadth order
+void preOrderTraversal(TreeType& bstp, TreeType& bsts);		// print all armors codename with its type by pre-order
+void inOrderTraversal(TreeType& bstp, TreeType& bsts);		// print all armors codename with its type by in-order
+void postOrderTraversal(TreeType& bstp, TreeType& bsts);	// print all armors codename with its type by post-order
 
 
+/* display function to pass to BST print function */
 
-// display function to pass to BST print function
 //void display(Armors* item)
 //{
 //	cout << item << endl;
@@ -59,11 +71,19 @@ void display(Armors* a) {
 	cout << "\n--------------------------------------------------------------------------" << endl;
 }
 
+/*****************************************************************
+void displayCodenames(Armors* item):
+	display the armor codenames with its type
+*****************************************************************/
 void displayCodenames(Armors* item)
 {
 	cout << right << setw(20) << item->getCodename() << " -" << item->getArmorType() << endl ;
 }
 
+/*****************************************************************
+void displayTree(Armors* item, int level):
+	print tree with indent depending on the level
+*****************************************************************/
 void displayTree(Armors* item, int level)
 {
 	// print 'level'  TABs to make indention
@@ -74,21 +94,170 @@ void displayTree(Armors* item, int level)
 	cout << "Level " << level + 1 << ". " << item << endl;
 }
 
-
 int main()
 {
 	const char inputFileName[] = "armors.txt";
 
-	//TreeType* bstP = 0;
 	TreeType bstP;
 	TreeType bstS;
 	fileInput(inputFileName, bstP, bstS);
 
 	menu();
-	processChoice(bstP);
+	processChoice(bstP, bstS);
+
+	Hash H(79);
+	hashInput(inputFileName, H);
+	H.stat();
+	insertHashManager(H);
+	searchHashManager(H, display);
+	deleteHashManager(H);
+	H.printHash(display);
 	
 }
 
+void insertHashManager(Hash& H) {
+	string targetName = "";
+	Armors* A = new Armors;
+	Armors* A2 = new Armors;
+	A2->setCodename("");
+
+	cout << "\n Insert\n";
+	cout << "=======\n";
+
+	while (A2->getCodename() != "Q")
+	{
+		cout << endl << "Enter an armor name to insert (or Q for stop inserting):";
+		getline(cin, targetName);
+		A2->setCodename(targetName);
+		cout << endl;
+		if (A2->getCodename() != "Q")
+		{
+			if (H.searchHash(A2, A))
+				cout << "Armor " << targetName << " is already in this Hash Table.";
+			else {
+				cout << "Enter the information of the Armor" << endl;
+				A->setCodename(targetName);
+				getline(cin, A);
+				if (H.insertItem(A))
+					cout << "\nInserted" << endl;
+			}
+		}
+	}
+	cout << endl;
+	cout << "___________________END INSERT SECTION _____\n";
+}
+
+void deleteHashManager(Hash& H) {
+	string targetName = "";
+	int n = 0;
+
+	cout << "\n Delete\n";
+	cout << "=======\n";
+
+	while (targetName != "Q")
+	{
+		cout << endl << "Enter an armor name for delete (or Q for stop searching): ";
+		getline(cin, targetName);
+
+		if (targetName != "Q")
+		{
+			if (H.deleteItem(targetName))
+				cout << "Deleted\n";
+			else
+				cout << "Armor " << targetName << " was not found in this Hash Table." << endl;
+		}
+	}
+	cout << "___________________END DELETE SECTION_____\n";
+}
+
+void searchHashManager(Hash& H, void visit(Armors*)) {
+	string key = "";
+	string sKey = "";
+	Armors* A;
+	Armors* A2;
+	A = new Armors;
+	A2 = new Armors;
+	cout << "\n Search\n";
+	cout << "=======\n";
+	do
+	{
+		cout << "\nEnter a primary key for search (or Q for stop searching): ";
+		getline(cin, key);
+		if (!cin.good())
+			inputValid(key);
+		A2->setCodename(key);
+		cout << endl;
+		if (A2->getCodename() != "Q") {
+			if (!H.searchHash(A2, A))
+				cout << "Armor " << key << " was not found in this Hash Table.\n";
+			else
+				visit(A);
+		}
+	} while (key != "Q");
+
+	cout << endl;
+	cout << "___________________END SEARCH SECTION _____\n";
+
+}
+
+void inputValid(string& returnItem) {
+	string val;
+	do {
+		cout << "Your input is invalid\n" << "Please input integer to search\n";
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		getline(cin, val);
+	} while (!cin.good());
+	returnItem = val;
+}
+
+void hashInput(string filename, Hash& H)
+{
+	ifstream infile(filename);
+
+	string codename, type, creator, movie, curstat, precede, succeed, users, capbl, weap, space;
+	int year = 0;
+
+	if (!infile) {
+		cout << "Error happened to open the input file!" << endl;
+		exit(EXIT_FAILURE);
+	}
+
+	// READING THE FILE AND DECLARE TO RESPECTICE VARIABLE 
+	//======================================================
+
+	while (getline(infile, codename, ';'))
+	{
+		getline(infile, type, ';');
+		getline(infile, creator, ';');
+		infile >> year;
+		infile.ignore();
+		getline(infile, users, ';');
+		getline(infile, movie, ';');
+		getline(infile, curstat, ';');
+		getline(infile, capbl, ';');
+		getline(infile, weap, ';');
+		getline(infile, precede, ';');
+		getline(infile, succeed, ';');
+
+
+		Armors* armors;
+		armors = new Armors(codename, type, creator, year, users, movie, curstat, capbl, weap, precede, succeed);
+		H.insertItem(armors);
+		cout << "Inserted\n";
+		getline(infile, space);
+	}
+	infile.close();
+}
+
+/**********************************************************************
+BUILD BST
+void fileInput(string filename, TreeType& bstp, TreeType& bsts):
+	this function will read data from txt file and insert the data
+	into the 2 BST (primary key & secondary key)
+
+	Input Parameter: the 2 BST to build BST
+**********************************************************************/
 void fileInput(string filename, TreeType& bstp, TreeType& bsts)
 {
 	ifstream infile(filename);
@@ -145,15 +314,16 @@ void fileInput(string filename, TreeType& bstp, TreeType& bsts)
 	infile.close();
 }
 
-
-void menu()
-{
-	/*
+/**********************************************************************
+void menu():
+	this will print the menu. layout of menu:
+	
 	1 : (A) ADD
 	2 : (D) DELETE
 	3 : (S) SEARCH :
 		1 : (P)SEARCH by PRIMARY Key
 		2 : (S)SEARCH by SECONDARY Key
+		0 : Back to main menu
 	4 : (L) LIST :
 		1 : (U)LIST - Unsorted
 		2 : (P)LIST - Sorted by PRIMARY Key
@@ -163,10 +333,12 @@ void menu()
 		6 : (1) LIST - Print PRE-ORDER
 		7 : (2) LIST - Print IN-ORDER
 		8 : (3) LIST - Print POST-ORDER
-	0 : Quit / Back to main menu
-	*/
+		0 : Basck to main menu
+	0 : Quit
 
-
+**********************************************************************/
+void menu()
+{
 	cout << "                        MENU                        \n";
 	cout << "======================================================" << endl;
 	cout << "1 : Add armor" << endl;
@@ -177,15 +349,22 @@ void menu()
 	cout << "------------------------------------------------------" << endl;
 }
 
+/**********************************************************************
+void searchSubmenu(TreeType& bstp, TreeType& bsts):
+	when the user choose to search, a sub-menu will be printed so
+	the user can choose how they want to search it.
+	It will keep prompting user for the choice if input is invalid
 
-void searchSubmenu(TreeType& bst)
+	Input Parameter: the 2 BST for recursion
+**********************************************************************/
+void searchSubmenu(TreeType& bstp, TreeType& bsts)
 {
 	int y = -1;
 	cout << "Search by:" << endl;
 	cout << "------------" << endl;
 	cout << "1 : Primary Key " << endl;
 	cout << "2 : Secondary Key " << endl;
-	cout << "0 : Back to menu " << endl;
+	cout << "0 : Back to main menu " << endl;
 	cout << "User choice: ";
 	cin >> y;
 	cin.ignore();
@@ -194,24 +373,31 @@ void searchSubmenu(TreeType& bst)
 	switch (y)
 	{
 	case 1: // search by primary key function
-		searchBSTp(bst);
+		searchBSTp(bstp, bsts);
 		break;
 	case 2: // search by secondary key function
-		searchBSTs(bst);
+		searchBSTs(bstp, bsts);
 		break;
 	case 0: menu();
-		processChoice(bst);
+		processChoice(bstp, bsts);
 		break;
 	default: 
-		cout << "----------------" << endl;
-		cout << " INPUT INVALID. " << endl;
-		cout << "----------------" << endl;
-		searchSubmenu(bst);
+		cout << "--------------------" << endl;
+		cout << "   INPUT INVALID.   " << endl;
+		cout << "--------------------" << endl;
+		searchSubmenu(bstp, bsts);
 	}
 }
 
+/**********************************************************************
+void listSubmenu(TreeType& bstp, TreeType& bsts):
+	when the user choose to print list, a sub-menu will be printed so
+	the user can choose which order they want to see
+	It will keep prompting user for the choice if input is invalid
 
-void listSubmenu(TreeType& bst)
+	Input Parameter: the 2 BST for recursion
+**********************************************************************/
+void listSubmenu(TreeType& bstp, TreeType& bsts)
 {
 	int y = -1;
 	cout << "List as:" << endl;
@@ -224,7 +410,7 @@ void listSubmenu(TreeType& bst)
 	cout << "6 : Pre-order " << endl;
 	cout << "7 : In-order " << endl;
 	cout << "8 : Post-order " << endl;
-	cout << "0 : Back to menu " << endl;
+	cout << "0 : Back to main menu " << endl;
 	cout << "User choice: ";
 	cin >> y;
 	cin.ignore();
@@ -235,43 +421,47 @@ void listSubmenu(TreeType& bst)
 	case 1: // unsorted list
 		break;
 	case 2: // lsit sorted by primary key
-		listByPriKey(bst);
+		listByPriKey(bstp, bsts);
 		break;
 	case 3: // list sorted by secondary key
+		// listBySec(bstp, bsts); // not working yet
 		break;
 	case 4: // list printed as tree
 		//printTree(bst);
 		break;
 	case 5: // list printed as level-order
-		breadthTraversal(bst);
+		breadthTraversal(bstp, bsts);
 		break;
 	case 6: // list printed as pre-order
-		preOrderTraversal(bst);
+		preOrderTraversal(bstp, bsts);
 		break;
 	case 7: // list printed as in-order
-		inOrderTraversal(bst);
+		inOrderTraversal(bstp, bsts);
 		break;
 	case 8: // list printed as post-order
-		postOrderTraversal(bst);
+		postOrderTraversal(bstp, bsts);
 		break;
 	case 0: menu();
-		processChoice(bst);
+		processChoice(bstp, bsts);
 		break;
 	default: 
-		cout << "----------------" << endl;
-		cout << " INPUT INVALID. " << endl;
-		cout << "----------------" << endl;
-		listSubmenu(bst);
+		cout << "--------------------" << endl;
+		cout << "   INPUT INVALID.   " << endl;
+		cout << "--------------------" << endl;
+		listSubmenu(bstp, bsts);
 	}
 
 }
 
 
-/*****************************************************************
-void processChoice(char choice, TreeType& bst):
-processing user's choice and execute the function of the choice
-*****************************************************************/
-void processChoice(TreeType& bst)
+/**********************************************************************
+void processChoice(TreeType& bstp, TreeType& bsts):
+	Prompt user to choose the menu and execute their choice.
+	It will keep prompting user if input is invalid
+	
+	Input Parameter: the 2 BST for recursion
+**********************************************************************/
+void processChoice(TreeType& bstp, TreeType& bsts)
 {
 	int x = 0;
 	cout << "User input: ";
@@ -282,65 +472,31 @@ void processChoice(TreeType& bst)
 	switch (x)
 	{
 	case 1: // add function
-		insertToTree(bst);
+		insertToTree(bstp, bsts);
 		break;
 	case 2: // delete function
-		delData(bst);
+		delData(bstp, bsts);
 		break;
 	case 3:
-		searchSubmenu(bst);
+		searchSubmenu(bstp, bsts);
 		break;
 	case 4:
-		listSubmenu(bst);
+		listSubmenu(bstp, bsts);
 		break;
 	case 0: cout << "Program ended" << endl;
 		exit(EXIT_FAILURE);
 	default:
-		cout << "----------------" << endl;
-		cout << " INPUT INVALID. " << endl;
-		cout << "----------------" << endl;
-		processChoice(bst);
+		cout << "--------------------" << endl;
+		cout << "   INPUT INVALID.   " << endl;
+		cout << "--------------------" << endl;
+		processChoice(bstp, bsts);
 	}
 }
 
-
-///**********************************************************************
-// Insert manager: insert data of college by the user into the list
-// Input Parameter: list
-// **********************************************************************/
-//void insertToTree(TreeType& bst)
-//{
-//	/*string codename = "";
-//	
-//
-//	cout << "\n Insert Data \n";
-//	cout << "===============\n";
-//	cout << "Codename: ";
-//
-//	getline(cin, codename);
-//	cout << endl;
-//
-//	Armors* A;
-//	A = new Armors;
-//
-//	while (codename != "Q")
-//	{
-//		if (codename != "Q")
-//		{
-//			if (bst.getEntry1(codename, A))
-//			{
-//				cout << "Armor already exist." << endl;
-//			}
-//			else
-//			{
-//				getline(cin, A);
-//				bst.insert(A);
-//			}
-//		}
-//	}*/
-//}
-//
-// input function
+/**********************************************************************
+string inputKey():
+	Prompt user to input a string and return the string.
+**********************************************************************/
 string inputKey()
 {
 	string key;
@@ -349,12 +505,18 @@ string inputKey()
 	return key;
 }
 
+/**********************************************************************
+ADD
+void insertToTree(TreeType& bstp, TreeType& bsts):
+	When the user choose to add data, it will prompt the user
+	to input all the variable into an object and then insert it into
+	the 2 BST.
+	If the codename that the user input already exist, it will reject
+	the insertion and it will go back to main menu
 
-///**********************************************************************
-// Insert manager: 
-//		insert data of armor by the user into the list
-// **********************************************************************/
-void insertToTree(TreeType& bst)
+	Input Parameter: the 2 BST for insertion
+**********************************************************************/
+void insertToTree(TreeType& bstp, TreeType& bsts)
 {
 	Armors* A1;
 	A1 = new Armors;
@@ -362,17 +524,9 @@ void insertToTree(TreeType& bst)
 	A2 = new Armors;
 	A2->setCodename("");
 
-	string codename = "";
-	string	armorType = "";
-	string	creator = "";
+	string codename = "", armorType = "", creator = "", users = "", movieAppeared = "", 
+		currStats = "", capabilities = "", weapons = "", precede = "", succeed = "";
 	int	yearMade = 0;
-	string	users = "";
-	string	movieAppeared = "";
-	string	currStats = "";
-	string	capabilities = "";
-	string	weapons = "";
-	string	precede = "";
-	string	succeed = "";
 
 	cout << "\n                     INSERT                         \n";
 	cout << "======================================================\n";
@@ -380,11 +534,11 @@ void insertToTree(TreeType& bst)
 
 
 	A2->setCodename(codename);
-	if (bst.getEntry(A2, A1))
+	if (bstp.getEntry(A2, A1))
 	{
 		cout << codename << " already in the system." << endl;
 		menu();
-		processChoice(bst);
+		processChoice(bstp, bsts);
 	}
 	else {	
 		cout << "      Armor type: ";	getline(cin, armorType);
@@ -398,11 +552,14 @@ void insertToTree(TreeType& bst)
 		cout << "         Weapons: ";	getline(cin, weapons);
 		cout << "         Precede: ";	getline(cin, precede);
 		cout << "         Succeed: ";	getline(cin, succeed);
-		cout << endl;
+		cout << "------------------------------------------------------\n";
 
 		Armors* A;
 		A = new Armors(codename, armorType, creator, yearMade, users, movieAppeared, currStats, capabilities, weapons, precede, succeed);
-		bst.insert(A);
+		bstp.insert(A);
+		bsts.insertSec(A);
+
+		cout << "                INSERTION COMPLETE                    " << endl;
 
 		// Write to file
 		/*
@@ -431,11 +588,26 @@ void insertToTree(TreeType& bst)
 	}
 
 	menu();
-	processChoice(bst);
+	processChoice(bstp, bsts);
 }
 
-// search by primarky key
-void searchBSTp(TreeType& bst)
+/**********************************************************************
+SEARCH by PRIMARY key
+void searchBSTp(TreeType& bstp, TreeType& bsts):
+	When user choose to search by primary key, it will prompt
+	the user to enter the codename.
+	If it exist, it will print out the data.
+	if it's not it will show that it's not found.
+
+	When the user choose to add data, it will prompt the user
+	to input all the variable into an object and then insert it into
+	the 2 BST.
+	If the codename that the user input already exist, it will reject
+	the insertion and it will go back to main menu
+
+	Input Parameter: the 2 BST for recursion
+**********************************************************************/
+void searchBSTp(TreeType& bstp, TreeType& bsts)
 {
 	string key = "";
 
@@ -450,24 +622,24 @@ void searchBSTp(TreeType& bst)
 	key = inputKey();
 	A2->setCodename(key);
 	if (A2->getCodename() != "0") {
-		if (bst.getEntry(A2, A1))
+		if (bstp.getEntry(A2, A1))
 		{
 			display(A1);
-			searchBSTp(bst);
+			searchBSTp(bstp, bsts);
 		}
 		else {
 			cout << key << " not found." << endl;
-			searchBSTp(bst);
+			searchBSTp(bstp, bsts);
 		}
 	}
-	else { cout << endl; menu(); processChoice(bst); }
+	else { cout << endl; menu(); processChoice(bstp, bsts); }
 
 
 
 }
 
 // Search for secondary key
-void searchBSTs(TreeType& bst)
+void searchBSTs(TreeType& bstp, TreeType& bsts)
 {
 	string key = "";
 
@@ -482,17 +654,17 @@ void searchBSTs(TreeType& bst)
 	key = inputKey();
 	A2->setArmorType(key);
 	if (A2->getArmorType() != "0") {
-		if (bst.getEntrySec(A2, A1, display))
+		if (bstp.getEntrySec(A2, A1, display))
 		{
 			// FOUND!
-			//searchBSTs(bst);
+			searchBSTs(bstp, bsts);
 		}
 		else {
 			cout << "NOT FOUND." << endl;
-			//searchBSTs(bst);
+			searchBSTs(bstp, bsts);
 		}
 	}
-	else { menu(); processChoice(bst); }
+	else { menu(); processChoice(bstp, bsts); }
 
 
 }
@@ -501,7 +673,7 @@ void searchBSTs(TreeType& bst)
 // delData: 
 //	delete data based on the codename that the user input.
 // **********************************************************************/
-void delData(TreeType& bst)
+void delData(TreeType& bstp, TreeType& bsts)
 {
 	string key = "";
 
@@ -511,7 +683,7 @@ void delData(TreeType& bst)
 	cout << "Delete data: ";
 	cout << "\n                             DELETE                                    \n";
 	cout << "===========================================================================" << endl;
-	bst.inOrder(displayCodenames);
+	bstp.inOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl;
 	
 	key = inputKey();
@@ -521,75 +693,84 @@ void delData(TreeType& bst)
 	{
 		cout << endl;
 		menu();
-		processChoice(bst);
+		processChoice(bstp, bsts);
 	}
 
-	if (bst.remove(A1) == true)
+	if (bstp.remove(A1) == true && bsts.remove(A1) == true)
 	{
 		cout << key << " removed. \n\n";
 		menu();
-		processChoice(bst);
+		processChoice(bstp, bsts);
 	}
 	else {
 		cout << key << " doesn't exists." << endl;
 		menu();
-		processChoice(bst);
+		processChoice(bstp, bsts);
 	}
 
 }
 
-void listUnsorted(TreeType& bst)
+void listUnsorted(TreeType& bstp, TreeType& bsts)
 {
 	cout << "UNSORTED:" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
-	bst.preOrder(displayCodenames);
+	bstp.preOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
-	menu(); processChoice(bst);
+	menu(); processChoice(bstp, bsts);
 }
 
-void listByPriKey(TreeType& bst)
+void listByPriKey(TreeType& bstp, TreeType& bsts)
 {
 	cout << "By PRIMARY Key:" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
-	bst.inOrder(displayCodenames);
+	bstp.inOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
-	menu(); processChoice(bst);
+	menu(); processChoice(bstp, bsts);
 }
 
-void breadthTraversal(TreeType& bst)
+void listBySec(TreeType& bstp, TreeType& bsts)
+{
+	cout << "By SECONDARY Key:" << endl;
+	cout << "---------------------------------------------------------------------------" << endl;
+	// bsts
+	cout << "---------------------------------------------------------------------------" << endl << endl;
+	menu(); processChoice(bstp, bsts);
+}
+
+void breadthTraversal(TreeType& bstp, TreeType& bsts)
 {
 	cout << "LEVEL-ORDER:" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
-	bst._breadthF(displayCodenames);
+	bstp._breadthF(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
-	menu(); processChoice(bst);
+	menu(); processChoice(bstp, bsts);
 }
 
-void preOrderTraversal(TreeType& bst)
+void preOrderTraversal(TreeType& bstp, TreeType& bsts)
 {
-	cout << "PRE-ORDER (Same as PRE-ORDER):" << endl;
+	cout << "PRE-ORDER:" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
-	bst.preOrder(displayCodenames);
+	bstp.preOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
-	menu(); processChoice(bst);
+	menu(); processChoice(bstp, bsts);
 }
 
-void inOrderTraversal(TreeType& bst)
+void inOrderTraversal(TreeType& bstp, TreeType& bsts)
 {
-	cout << "IN-ORDER (Same as PRIMARY Key):" << endl;
+	cout << "IN-ORDER:" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
-	bst.inOrder(displayCodenames);
+	bstp.inOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
-	menu(); processChoice(bst);
+	menu(); processChoice(bstp, bsts);
 }
 
-void postOrderTraversal(TreeType& bst)
+void postOrderTraversal(TreeType& bstp, TreeType& bsts)
 {
 	cout << "POST-ORDER:" << endl;
 	cout << "---------------------------------------------------------------------------" << endl;
-	bst.postOrder(displayCodenames);
+	bstp.postOrder(displayCodenames);
 	cout << "---------------------------------------------------------------------------" << endl << endl;
-	menu(); processChoice(bst);
+	menu(); processChoice(bstp, bsts);
 }
 
 //

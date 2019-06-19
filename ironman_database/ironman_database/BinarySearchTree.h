@@ -303,54 +303,69 @@ BinaryNode* BinarySearchTree::findNode(BinaryNode* nodePtr,
 BinaryNode* BinarySearchTree::findNodeSec(BinaryNode* nodePtr,
 	Armors* target, void visit(Armors*)) const
 {
-	cout << "I am trying to find a node\n";
-	Armors* rootItem = nodePtr->getItem();
-	cout << rootItem->getArmorType() << endl;
-	cout << target->getArmorType() << endl;
-	BinaryNode* found = nullptr;
-	BinaryNode* pWalk;
-	pWalk = nodePtr;
-
-	while (nodePtr != NULL)
+	if (nodePtr == NULL)
 	{
-		if (target->getArmorType() < rootItem->getArmorType())
-		{
-
-			pWalk = pWalk->getLeftPtr();
-			cout << "went left, data are\n";
-			cout << "type : " <<  pWalk->getItem()->getArmorType() << endl;
-			cout << "codename : " << pWalk->getItem()->getCodename() << endl;
-			//if (nodePtr == 0) { break; }
-			//rootItem = nodePtr->getItem();
-		}
-		else {
-			if (target->getArmorType() > rootItem->getArmorType())
-			{
-				pWalk = pWalk->getRightPtr();
-				cout << "went right, data are\n";
-				cout << "type : " << pWalk->getItem()->getArmorType() << endl;
-				cout << "codename : " << pWalk->getItem()->getCodename() << endl;
-				//if (nodePtr == 0) { break; }
-				//rootItem = nodePtr->getItem();
-			}
-			else {
-				cout << "Found it\n";
-				found = pWalk;
-				visit(found->getItem());
-				cout << found->getRightPtr()->getItem()->getArmorType() << endl;
-				cout << found->getLeftPtr()->getItem()->getArmorType() << endl;
-				cout << found->getLeftPtr()->getItem()->getCodename() << endl;
-
-				if (found->getLeftPtr()->getItem()->getArmorType() == target->getArmorType()) {
-					findNodeSec(found->getLeftPtr(), target, visit);
-
-				}
-	
-				return found;
-			}
-		}
+		return 0;
 	}
+
+	if (target->getArmorType().compare(nodePtr->getItem()->getArmorType()) == 0) {
+		cout << nodePtr->getItem() << endl;
+	}
+
+	findNodeSec(nodePtr->getLeftPtr(), target, visit);
+
+	findNodeSec(nodePtr->getRightPtr(), target, visit);
+
+	return 0;
 }
+
+	//cout << "I am trying to find a node\n";
+	//Armors* rootItem = nodePtr->getItem();
+	//cout << rootItem->getArmorType() << endl;
+	//cout << target->getArmorType() << endl;
+	//BinaryNode* found = nullptr;
+	//BinaryNode* pWalk;
+	//pWalk = nodePtr;
+
+	//while (nodePtr != NULL)
+	//{
+	//	if (target->getArmorType() < rootItem->getArmorType())
+	//	{
+
+	//		pWalk = pWalk->getLeftPtr();
+	//		/*cout << "went left, data are\n";
+	//		cout << "type : " <<  pWalk->getItem()->getArmorType() << endl;
+	//		cout << "codename : " << pWalk->getItem()->getCodename() << endl;*/
+	//		if (nodePtr == 0) { break; }
+	//		rootItem = nodePtr->getItem();
+	//	}
+	//	else {
+	//		if (target->getArmorType() > rootItem->getArmorType())
+	//		{
+	//			pWalk = pWalk->getRightPtr();
+	//			/*cout << "went right, data are\n";
+	//			cout << "type : " << pWalk->getItem()->getArmorType() << endl;
+	//			cout << "codename : " << pWalk->getItem()->getCodename() << endl;*/
+	//			if (nodePtr == 0) { break; }
+	//			rootItem = nodePtr->getItem();
+	//		}
+	//		else {
+	//			cout << "Found it\n";
+	//			found = pWalk;
+	//			visit(found->getItem());
+	//		/*	cout << found->getRightPtr()->getItem()->getArmorType() << endl;
+	//			cout << found->getLeftPtr()->getItem()->getArmorType() << endl;
+	//			cout << found->getLeftPtr()->getItem()->getCodename() << endl;*/
+
+	//			if (found->getLeftPtr()->getItem()->getArmorType() == target->getArmorType()) {
+	//				findNodeSec(found->getLeftPtr(), target, visit);
+	//			}
+	//
+	//			return found;
+	//		}
+	//	}
+	//}
+
 
 	/*
 	

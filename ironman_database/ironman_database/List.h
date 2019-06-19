@@ -1,11 +1,9 @@
-// Specification file for the CollegeList class
-// Written By:
-// IDE: 
 
 #ifndef List_H
 #define List_H
 
 #include "Armors.h"
+#include <iostream>
 #include <fstream> 
 #include <iomanip>
 
@@ -16,7 +14,7 @@ class List
 {
 private:
 	struct ListNode {
-		Armors *A;
+		Armors* A;
 		ListNode* next;
 	};
 	ListNode* head;
@@ -29,9 +27,9 @@ public:
 	// Linked list operations
 	bool insertNode(Armors*);
 	bool deleteNode(string);
-	bool searchListP(string, Armors*);
-	bool searchListS(string, Armors*);
-	void displayList() const;
+	bool searchListP(Armors*, Armors*&);
+	bool searchListS(Armors*, Armors*);
+	void displayList(void visit(Armors*)) const;
 	int getCount() { return count; }
 
 	//Destructor
@@ -131,18 +129,24 @@ bool List::deleteNode(string target)
 //******************************************************************************
 // Search function shows if the college name is match with what the user enters
 //******************************************************************************
-bool List::searchListP(string target, Armors* dataOut)
+bool List::searchListP(Armors* target, Armors*& dataOut)
 {
 	ListNode* pCur;
 	pCur = head->next;
 	bool found = false;
-
-	while (pCur != NULL && pCur->A->getCodename() < target)
+	cout << target;
+	while (pCur != NULL && pCur->A->getCodename() != target->getCodename()) {
+		cout << pCur->A->getCodename() << endl;
 		pCur = pCur->next;
 
-	if (pCur != NULL && pCur->A->getCodename() == target) {
+	}
+	//pCur = pCur->next;
+
+	if (pCur != NULL && pCur->A->getCodename() == target->getCodename()) {
 		found = true;
 		dataOut = pCur->A;
+		cout << pCur->A << " " << dataOut << endl;
+		cout << "I found it!!!!!!!!!\n";
 	}
 	return found;
 
@@ -152,26 +156,23 @@ bool List::searchListP(string target, Armors* dataOut)
 // Display function shows every college name with their rank and cost.
 //**************************************************
 
-//void List::displayList() const
-//{
-//	ListNode *pCur;  // To move through the list
-//
-//					 // print header
-//	cout << endl
-//		<< "==== ============================= ========= ==========" << endl
-//		<< "Rank          Name                    Cost      NoStu  " << endl
-//		<< "==== ============================= ========= ==========" << endl;
-//
-//	pCur = head->next;          // Position pCur: skip the head of the list.
-//	while (pCur != NULL)
-//	{
-//		pCur->col.display();  //Display the value in the node.
-//		pCur = pCur->next;    //Move to the next node.
-//
-//	}
-//	cout
-//		<< "==== ============================= ========= ==========" << endl;
-//}
+void List::displayList(void visit(Armors*)) const
+{
+	ListNode* pCur;  // To move through the list
+
+					 // print header
+	cout << endl << endl;
+
+	pCur = head->next;          // Position pCur: skip the head of the list.
+	while (pCur != NULL)
+	{
+		visit(pCur->A);  //Display the value in the node.
+		pCur = pCur->next;    //Move to the next node.
+
+	}
+	cout
+		<< "==== ============================= ========= ==========" << endl;
+}
 
 //**************************************************
 // Destructor                                      *

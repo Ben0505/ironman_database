@@ -77,6 +77,8 @@ public:
 	string getSuc() { return succeed; }
 
 	// Other functions
+	int intInputValid();
+	int isIntGood(int a, Armors*);
 
 	// Operator functions
 	/*bool operator<(Armors* a1);
@@ -135,6 +137,24 @@ public:
 	}*/
 
 };
+
+int Armors::intInputValid() {
+	int a = 0;
+	while (!cin.good()) {
+		cout << "Input year is invalid.";
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cout << endl << "Please input valid year: ";
+		cin >> a;
+	}
+	return a;
+}
+
+int Armors::isIntGood(int a, Armors* A) {
+	if (!cin.good())
+		a = A->intInputValid();
+	return a;
+}
 
 //bool Armors::operator<(Armors* a1)
 //{
