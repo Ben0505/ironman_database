@@ -12,7 +12,7 @@ class BinarySearchTree : public BinaryTree
 {
 private:
 	// internal insert node: insert newNode in nodePtr subtree
-	BinaryNode* _insert(BinaryNode* nodePtr, BinaryNode* newNode);
+	BinaryNode * _insert(BinaryNode* nodePtr, BinaryNode* newNode);
 	BinaryNode* _insertSec(BinaryNode* nodePtr, BinaryNode* newNode);
 
 	// internal remove node: locate and delete target node under nodePtr subtree
@@ -22,7 +22,7 @@ private:
 	BinaryNode* deleteNode(BinaryNode* targetNodePtr);
 
 	// remove the leftmost node in the left subtree of nodePtr
-	BinaryNode* removeLeftmostNode(BinaryNode* nodePtr, Armors* successor);
+	BinaryNode* removeLeftmostNode(BinaryNode* nodePtr, Armors*& successor);
 
 	// search for target node
 	BinaryNode* findNode(BinaryNode* treePtr, Armors* target) const;
@@ -37,33 +37,35 @@ public:
 	bool remove(Armors* anEntry);
 	// find a target node
 	bool getEntry(Armors* target, Armors*& returnedItem) const;
-	bool getEntrySec(Armors* target, Armors*& returnedItem, void visit(Armors*)) const;
+	bool getEntrySec(Armors* target, Armors *&,void visit(Armors*)) const;
+	void deleteRoot();
+	void destroyTree(BinaryNode *nptr);
+
+	~BinarySearchTree();
+
 
 };
+
 
 
 ///////////////////////// public function definitions ///////////////////////////
 //Inserting items within a tree
 bool BinarySearchTree::insert(Armors* newentry)
 {
-	//cout << "in insert func, Armors newentry:" << newentry->getCodename() << endl;
 	BinaryNode* newnodeptr = new BinaryNode(newentry);
-	//cout << "Now Im calling _insert \n";
-
+	
 	this->rootPtr = _insert(this->rootPtr, newnodeptr);
-	//cout << "***********Inserted\n";
+	
 	return true;
 }
 
 //Inserting items within a tree
 bool BinarySearchTree::insertSec(Armors* newentry)
 {
-	//cout << "in insert func, Armors newentry:" << newentry->getCodename() << endl;
 	BinaryNode* newnodeptr = new BinaryNode(newentry);
-	//cout << "Now Im calling _insert \n";
-
+	
 	this->rootPtr = _insertSec(this->rootPtr, newnodeptr);
-	//cout << "***********Inserted\n";
+	
 	return true;
 }
 
@@ -72,6 +74,7 @@ bool BinarySearchTree::remove(Armors* target)
 {
 	bool isSuccessful = false;
 	this->rootPtr = _remove(this->rootPtr, target, isSuccessful);
+
 	return isSuccessful;
 }
 
@@ -80,9 +83,6 @@ bool BinarySearchTree::remove(Armors* target)
 bool BinarySearchTree::getEntry(Armors* anEntry, Armors*& returnedItem) const
 {
 	BinaryNode* newNodePtr = findNode(this->rootPtr, anEntry);
-
-	//cout << "A2 : " << anEntry->getCodename() << endl;
-	//cout << "A1 : " << returnedItem->getCodename() << endl;
 
 	if (newNodePtr != NULL)
 	{
@@ -93,12 +93,9 @@ bool BinarySearchTree::getEntry(Armors* anEntry, Armors*& returnedItem) const
 }
 
 //Finding entries within a tree
-bool BinarySearchTree::getEntrySec(Armors* anEntry, Armors*& returnedItem, void visit(Armors*)) const
+bool BinarySearchTree::getEntrySec(Armors* anEntry, Armors *&returnedItem, void visit(Armors*)) const
 {
 	BinaryNode* newNodePtr = findNodeSec(this->rootPtr, anEntry, visit);
-
-	//cout << "A2 : " << anEntry->getCodename() << endl;
-	//cout << "A1 : " << returnedItem->getCodename() << endl;
 
 	if (newNodePtr != NULL)
 	{
@@ -114,29 +111,20 @@ bool BinarySearchTree::getEntrySec(Armors* anEntry, Armors*& returnedItem, void 
 BinaryNode* BinarySearchTree::_insert(BinaryNode* nodePtr,
 	BinaryNode* newNodePtr)
 {
-	//cout << "I am in _insert func \n";
-	//cout << "nodePtr : " << nodePtr->getItem()->getCodename() << endl;
-
 	if (nodePtr == NULL) {
-		//cout << "There is no node in tree \n";
 		nodePtr = newNodePtr;
 	}
 	else {
 		Armors* newItem = newNodePtr->getItem();
 		Armors* rootItem = nodePtr->getItem();
 
-		//cout << "newItem : " << newItem->getCodename() << endl;
-		//cout << "rooItem : " <<rootItem->getCodename() << endl;
 		if (newItem->getCodename() < rootItem->getCodename()) {
-			//cout << newItem->getCodename() << " going to the leftnode\n";
 			nodePtr->setLeftPtr(_insert(nodePtr->getLeftPtr(), newNodePtr));
 		}
 		else {
-			//cout << newItem->getCodename() << " going to the rightnode\n";
 			nodePtr->setRightPtr(_insert(nodePtr->getRightPtr(), newNodePtr));
 		}
 	}
-	//cout << "I am returning to insert\n";
 	return nodePtr;
 }
 
@@ -144,33 +132,23 @@ BinaryNode* BinarySearchTree::_insert(BinaryNode* nodePtr,
 BinaryNode* BinarySearchTree::_insertSec(BinaryNode* nodePtr,
 	BinaryNode* newNodePtr)
 {
-	cout << "I am in _insert func \n";
-	//cout << "nodePtr : " << nodePtr->getItem()->getCodename() << endl;
-
 	if (nodePtr == NULL) {
-		cout << "There is no node in tree \n";
 		nodePtr = newNodePtr;
 	}
 	else {
 		Armors* newItem = newNodePtr->getItem();
 		Armors* rootItem = nodePtr->getItem();
 
-		//cout << "newItem : " << newItem->getCodename() << endl;
-		//cout << "rooItem : " <<rootItem->getCodename() << endl;
 		if (newItem->getArmorType() < rootItem->getArmorType()) {
-			cout << newItem->getCodename() << " going to the leftnode\n";
-			nodePtr->setLeftPtr(_insert(nodePtr->getLeftPtr(), newNodePtr));
+			nodePtr->setLeftPtr(_insertSec(nodePtr->getLeftPtr(), newNodePtr));
 		}
 		else if (newItem->getArmorType() > rootItem->getArmorType()) {
-			cout << newItem->getCodename() << " going to the rightnode\n";
-			nodePtr->setRightPtr(_insert(nodePtr->getRightPtr(), newNodePtr));
+			nodePtr->setRightPtr(_insertSec(nodePtr->getRightPtr(), newNodePtr));
 		}
-		else {
-			cout << newItem->getCodename() << " going to the rightnode cuz duplicate\n";
-			nodePtr->setRightPtr(_insert(nodePtr->getRightPtr(), newNodePtr));
+		else if (newItem->getArmorType() == rootItem->getArmorType()) {
+			nodePtr->setRightPtr(_insertSec(nodePtr->getRightPtr(), newNodePtr));
 		}
 	}
-	cout << "I am returning to insert\n";
 	return nodePtr;
 }
 
@@ -178,29 +156,24 @@ BinaryNode* BinarySearchTree::_insertSec(BinaryNode* nodePtr,
 BinaryNode* BinarySearchTree::_remove(BinaryNode* nodePtr,
 	Armors* target,
 	bool& success)
-
 {
-	Armors* rootItem = nodePtr->getItem();
-	cout << endl;
 	if (nodePtr == 0)
 	{
 		success = false;
 		return 0;
 	}
-	if (rootItem->getCodename() > target->getCodename())
+	if (nodePtr->getItem()->getCodename() > target->getCodename())
 	{
 		nodePtr->setLeftPtr(_remove(nodePtr->getLeftPtr(), target, success));
 
 	}
-	else if (rootItem->getCodename() < target->getCodename())
+	else if (nodePtr->getItem()->getCodename() < target->getCodename())
 	{
 		nodePtr->setRightPtr(_remove(nodePtr->getRightPtr(), target, success));
 	}
 	else
 	{
-
 		nodePtr = deleteNode(nodePtr);
-
 		success = true;
 	}
 	return nodePtr;
@@ -242,7 +215,7 @@ BinaryNode* BinarySearchTree::deleteNode(BinaryNode* nodePtr)
 
 //Implementation to remove the left leaf
 BinaryNode* BinarySearchTree::removeLeftmostNode(BinaryNode* nodePtr,
-	Armors* successor)
+	Armors*& successor)
 {
 	if (nodePtr->getLeftPtr() == 0)
 	{
@@ -262,35 +235,23 @@ BinaryNode* BinarySearchTree::findNode(BinaryNode* nodePtr,
 	Armors* target) const
 {
 	Armors* rootItem = nodePtr->getItem();
-	//cout << "rooitem : " << rootItem->getCodename() << endl;
-  //cout<<endl;
 	while (nodePtr != NULL)
 	{
 		if (target->getCodename() < rootItem->getCodename())
 		{
-			//cout << "1target : " << target->getCodename() << endl;
-			//cout << "1rooitem : " << rootItem->getCodename() << endl;
+
 			nodePtr = nodePtr->getLeftPtr();
 			if (nodePtr == 0) { break; }
 			rootItem = nodePtr->getItem();
-
-			//cout << "1.1rooitem : " << rootItem->getCodename() << endl;
-			//cout<<endl;
 		}
 		else {
 			if (target->getCodename() > rootItem->getCodename())
 			{
-				//cout << "2target : " << target->getCodename() << endl;
-				//cout << "2rooitem : " << rootItem->getCodename() << endl;
 				nodePtr = nodePtr->getRightPtr();
 				if (nodePtr == 0) { break; }
 				rootItem = nodePtr->getItem();
-				//cout << "2.2rooitem : " << rootItem->getCodename() << endl;
-				//cout<<endl;
 			}
 			else {
-				//cout << "3rooitem : " << rootItem->getCodename() << endl;
-
 				return nodePtr;
 			}
 		}
@@ -309,7 +270,7 @@ BinaryNode* BinarySearchTree::findNodeSec(BinaryNode* nodePtr,
 	}
 
 	if (target->getArmorType().compare(nodePtr->getItem()->getArmorType()) == 0) {
-		cout << nodePtr->getItem() << endl;
+		visit( nodePtr->getItem());
 	}
 
 	findNodeSec(nodePtr->getLeftPtr(), target, visit);
@@ -319,81 +280,22 @@ BinaryNode* BinarySearchTree::findNodeSec(BinaryNode* nodePtr,
 	return 0;
 }
 
-	//cout << "I am trying to find a node\n";
-	//Armors* rootItem = nodePtr->getItem();
-	//cout << rootItem->getArmorType() << endl;
-	//cout << target->getArmorType() << endl;
-	//BinaryNode* found = nullptr;
-	//BinaryNode* pWalk;
-	//pWalk = nodePtr;
+void BinarySearchTree::deleteRoot() {
+	remove(this->rootPtr->getItem());
+	cout << "ROOT DELETED\n";
+}
 
-	//while (nodePtr != NULL)
-	//{
-	//	if (target->getArmorType() < rootItem->getArmorType())
-	//	{
+BinarySearchTree::~BinarySearchTree() {
+	destroyTree(this->rootPtr);
+}
 
-	//		pWalk = pWalk->getLeftPtr();
-	//		/*cout << "went left, data are\n";
-	//		cout << "type : " <<  pWalk->getItem()->getArmorType() << endl;
-	//		cout << "codename : " << pWalk->getItem()->getCodename() << endl;*/
-	//		if (nodePtr == 0) { break; }
-	//		rootItem = nodePtr->getItem();
-	//	}
-	//	else {
-	//		if (target->getArmorType() > rootItem->getArmorType())
-	//		{
-	//			pWalk = pWalk->getRightPtr();
-	//			/*cout << "went right, data are\n";
-	//			cout << "type : " << pWalk->getItem()->getArmorType() << endl;
-	//			cout << "codename : " << pWalk->getItem()->getCodename() << endl;*/
-	//			if (nodePtr == 0) { break; }
-	//			rootItem = nodePtr->getItem();
-	//		}
-	//		else {
-	//			cout << "Found it\n";
-	//			found = pWalk;
-	//			visit(found->getItem());
-	//		/*	cout << found->getRightPtr()->getItem()->getArmorType() << endl;
-	//			cout << found->getLeftPtr()->getItem()->getArmorType() << endl;
-	//			cout << found->getLeftPtr()->getItem()->getCodename() << endl;*/
-
-	//			if (found->getLeftPtr()->getItem()->getArmorType() == target->getArmorType()) {
-	//				findNodeSec(found->getLeftPtr(), target, visit);
-	//			}
-	//
-	//			return found;
-	//		}
-	//	}
-	//}
-
-
-	/*
-	
-	BinaryNode<itemtype>* BinarySearchTree<itemtype>::findNode(BinaryNode<itemtype>* nodeptr,
-                                                           const itemtype & target)  const 
-	{
-		BinaryNode<itemtype>* found = nullptr;
-		BinaryNode<itemtype>* pWalk;
-		pWalk = nodeptr;
-		while (pWalk != NULL && pWalk!=found) {
-			if (pWalk->getItem()<target)
-				pWalk=pWalk->getRightPtr();
-			else
-				if (pWalk->getItem() >target)
-					pWalk=pWalk->getLeftPtr();
-				else {
-					found = pWalk;
-					visit(found);
-					findNode(found, target);
-				}
-		}
-		return found;
+void BinarySearchTree::destroyTree(BinaryNode* nodePtr) {
+	if (remove(nodePtr->getItem())) {
+		cout << "Destroying a node... \n";
+		nodePtr = this->rootPtr;
+		if (nodePtr != nullptr)
+			destroyTree(nodePtr);
 	}
-	
-	*/
-//}
-
-
+}
 
 #endif
-

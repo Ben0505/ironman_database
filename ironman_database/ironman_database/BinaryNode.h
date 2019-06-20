@@ -1,12 +1,11 @@
-// Node for a binary tree
-
+#pragma once
 #ifndef _BINARY_NODE
 #define _BINARY_NODE
 #include "Armors.h"
 class BinaryNode
 {
 private:
-	Armors* armor;         // Data portion
+	Armors * armor;         // Data portion
 	BinaryNode* leftPtr;		// Pointer to left child
 	BinaryNode* rightPtr;		// Pointer to right child
 

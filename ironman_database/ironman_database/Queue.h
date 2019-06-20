@@ -1,5 +1,6 @@
+#pragma once
 /**~*~*
-   Queue template
+Queue template
 *~**/
 #ifndef DYNAMICQUEUE_H
 #define DYNAMICQUEUE_H
@@ -38,12 +39,12 @@ public:
 };
 
 /**~*~*
-   Destructor
+Destructor
 *~**/
 template <class T>
 Queue<T>::~Queue()
 {
-	QueueNode* currNode, * nextNode;
+	QueueNode* currNode, *nextNode;
 
 	// Position nodePtr at the top of the stack.
 	currNode = front;
@@ -59,8 +60,8 @@ Queue<T>::~Queue()
 
 
 /**~*~*
-  Member function getCount returns
-  the number of elements in the queue
+Member function getCount returns
+the number of elements in the queue
 *~**/
 template <class T>
 int Queue<T>::getCount()
@@ -69,8 +70,8 @@ int Queue<T>::getCount()
 }
 
 /**~*~*
-  Member function isEmpty returns true if the stack
-  is empty, or false otherwise.
+Member function isEmpty returns true if the stack
+is empty, or false otherwise.
 *~**/
 template <class T>
 bool Queue<T>::isEmpty()
@@ -79,15 +80,15 @@ bool Queue<T>::isEmpty()
 }
 
 /**~*~*
-  Member function enqueue inserts the argument into
-  the queue.
+Member function enqueue inserts the argument into
+the queue.
 *~**/
 template <class T>
 bool Queue<T>::enqueue(T item)
 {
 	QueueNode* newNode; // Pointer to a new node
 
-	// Allocate a new node and store num there.
+						// Allocate a new node and store num there.
 	newNode = new QueueNode;
 	if (!newNode)
 		return false;
@@ -108,16 +109,16 @@ bool Queue<T>::enqueue(T item)
 }
 
 /**~*~*
-  Member function dequeue deletes the value at the front
-  of the queue, and copies it into the variable
-  passed as an argument.
+Member function dequeue deletes the value at the front
+of the queue, and copies it into the variable
+passed as an argument.
 *~**/
 template <class T>
 bool Queue<T>::dequeue(T & item)
 {
 	QueueNode* pDel; // Temporary pointer
 
-	// empty queue
+					 // empty queue
 	if (count == 0)
 		return false;
 
@@ -137,8 +138,8 @@ bool Queue<T>::dequeue(T & item)
 }
 
 /**~*~*
-  Member function queueFront copies the value at the front
-  of the queue into the variable passed as an argument.
+Member function queueFront copies the value at the front
+of the queue into the variable passed as an argument.
 *~**/
 template <class T>
 bool Queue<T>::queueFront(T & item)
@@ -152,8 +153,8 @@ bool Queue<T>::queueFront(T & item)
 }
 
 /**~*~*
-  Member function queueRear copies the value at the rear
-  of the queue into the variable passed as an argument.
+Member function queueRear copies the value at the rear
+of the queue into the variable passed as an argument.
 *~**/
 template <class T>
 bool Queue<T>::queueRear(T & item)

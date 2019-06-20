@@ -1,5 +1,3 @@
-// Binary tree abstract base class
-
 #ifndef _BINARY_TREE
 #define _BINARY_TREE
 
@@ -9,29 +7,28 @@
 class BinaryTree
 {
 protected:
-	BinaryNode* rootPtr;		// ptr to root node
+	BinaryNode * rootPtr;		// ptr to root node
 	int count;							// number of nodes in tree
 
 public:
 	// "admin" functions
 	BinaryTree() { rootPtr = 0; count = 0; }
 	BinaryTree(const BinaryTree* tree) { }
-	//virtual ~BinaryTree() { }
-	//BinaryTree & operator = (const BinaryTree & sourceTree);
+	virtual ~BinaryTree() { }
 
 	// common functions for all binary trees
 	bool isEmpty() const { return count == 0; }
 	int size() const { return count; }
 	//	void clear()			{destroyTree(rootPtr); rootPtr = 0; count = 0;}
-	 void preOrder(void visit(Armors*)) const {_preorder(visit, rootPtr); }
-	 void inOrder(void visit(Armors*)) const  {_inorder(visit, rootPtr);}
-	 void postOrder(void visit(Armors*)) const{_postorder(visit, rootPtr);}
-	 void printTree(void visit(Armors*), void disLev(int, int)) { _printTree(visit,disLev, rootPtr, 1,6); }
+	void preOrder(void visit(Armors*)) const { _preorder(visit, rootPtr); }
+	void inOrder(void visit(Armors*)) const { _inorder(visit, rootPtr); }
+	void postOrder(void visit(Armors*)) const { _postorder(visit, rootPtr); }
+	void printTree(void visit(Armors*), void disLev(int, int)) { _printTree(visit, disLev, rootPtr, 1, 6); }
 	void _breadthF(void visit(Armors*)) const;
 	// abstract functions to be implemented by derived class
 	virtual bool insert(Armors* newData) = 0;
 	virtual bool remove(Armors * data) = 0;
-	//virtual bool getEntry(const Armors * anEntry, Armors *& returnedItem) const = 0;
+	virtual bool getEntry(Armors * anEntry, Armors *& returnedItem) const = 0;
 
 	// search for the smallest
 	// void findSmall(void visit(ItemType&)) { _findSmall(visit,rootPtr); }
@@ -42,9 +39,9 @@ private:
 	// delete all nodes from the tree
 	// void destroyTree(BinaryNode<ItemType>* nodePtr);
 	// internal traverse
-	 void _preorder(void visit(Armors*), BinaryNode* nodePtr) const;
-	 void _inorder(void visit(Armors*), BinaryNode* nodePtr) const;
-	 void _postorder(void visit(Armors*), BinaryNode* nodePtr) const;
+	void _preorder(void visit(Armors*), BinaryNode* nodePtr) const;
+	void _inorder(void visit(Armors*), BinaryNode* nodePtr) const;
+	void _postorder(void visit(Armors*), BinaryNode* nodePtr) const;
 	//Mirror of preorder traversal
 	void _printTree(void visit(Armors*), void displayLev(int, int), BinaryNode* nodePtr, int level, int space);
 	//finding smallest node in the tree and print
@@ -53,7 +50,6 @@ private:
 	// void _findLarge(void visit(ItemType &), BinaryNode<ItemType>* nodePtr) const;
 
 };
-
 
 /**********************************************
 _findSmall: Find the smallest item in the node
@@ -88,17 +84,17 @@ then print the item when it found
 _printTree: Prints every nodes in the tree
 in mirror of preorder
 ********************************************/
- void BinaryTree::_printTree(void visit(Armors*),void disLev(int, int), BinaryNode* nodePtr, int level, int space)
- {
- 	if (nodePtr != nullptr)
- 	{
+void BinaryTree::_printTree(void visit(Armors*), void disLev(int, int), BinaryNode* nodePtr, int level, int space)
+{
+	if (nodePtr != nullptr)
+	{
 		Armors* item = nodePtr->getItem();
- 		disLev(level,space);
- 		visit(item);
- 		_printTree(visit,disLev, nodePtr->getRightPtr(), level+1,space+6);
- 		_printTree(visit, disLev, nodePtr->getLeftPtr(),level+1,space+6);
- 	}
- }
+		disLev(level, space);
+		visit(item);
+		_printTree(visit, disLev, nodePtr->getRightPtr(), level + 1, space + 6);
+		_printTree(visit, disLev, nodePtr->getLeftPtr(), level + 1, space + 6);
+	}
+}
 
 
 /**************************************************************
@@ -150,49 +146,46 @@ void BinaryTree::_breadthF(void visit(Armors*)) const
 _preorder: print the tree in preorder
 using recursive method
 ********************************************/
- void BinaryTree::_preorder(void visit(Armors*), BinaryNode* nodePtr) const
- {
- 	//cout << count << endl;
- 	if (nodePtr != nullptr)
- 	{
+void BinaryTree::_preorder(void visit(Armors*), BinaryNode* nodePtr) const
+{
+	if (nodePtr != nullptr)
+	{
 		Armors* item = nodePtr->getItem();
- 		visit(item);
- 		_preorder(visit, nodePtr->getLeftPtr());
- 		_preorder(visit, nodePtr->getRightPtr());
- 	}
- }  
+		visit(item);
+		_preorder(visit, nodePtr->getLeftPtr());
+		_preorder(visit, nodePtr->getRightPtr());
+	}
+}
 
 /*******************************************
 _inOrder: print the tree in inorder order
 using recursive method
 *****************************************/
- void BinaryTree::_inorder(void visit(Armors*), BinaryNode* nodePtr) const
- {
- 	if (nodePtr != 0)
- 	{
+void BinaryTree::_inorder(void visit(Armors*), BinaryNode* nodePtr) const
+{
+	if (nodePtr != 0)
+	{
 		Armors* item = nodePtr->getItem();
- 		_inorder(visit, nodePtr->getLeftPtr());
- 		visit(item);
- 		_inorder(visit, nodePtr->getRightPtr());
- 	}
- }  
+		_inorder(visit, nodePtr->getLeftPtr());
+		visit(item);
+		_inorder(visit, nodePtr->getRightPtr());
+	}
+}
 
 /**********************************************
 _postorder: print the tree in postorder
 using recursive method
 ***********************************************/
- void BinaryTree::_postorder(void visit(Armors*), BinaryNode* nodePtr) const
- {
- 	if (nodePtr != 0)
- 	{
+void BinaryTree::_postorder(void visit(Armors*), BinaryNode* nodePtr) const
+{
+	if (nodePtr != 0)
+	{
 		Armors* item = nodePtr->getItem();
- 		_postorder(visit, nodePtr->getLeftPtr());
- 		_postorder(visit, nodePtr->getRightPtr());
- 		visit(item);
- 	}
- }  
+		_postorder(visit, nodePtr->getLeftPtr());
+		_postorder(visit, nodePtr->getRightPtr());
+		visit(item);
+	}
+}
 
 
 #endif
-
-#pragma once

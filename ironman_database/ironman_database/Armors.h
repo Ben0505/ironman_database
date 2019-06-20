@@ -1,13 +1,12 @@
-// Specification file for the Armor class
-// IDE: Visual Studio
-
-#include <string>
-#include <vector>
 
 #ifndef ARMOR_H
 #define ARMOR_H
+#include <string>
+#include "BinarySearchTree.h"
+#include <iostream>
 
 using namespace std;
+class Armors;
 
 class Armors
 {
@@ -39,33 +38,13 @@ public:
 		weapons = "";
 		precede = "";
 		succeed = "";
-	};
 
-	Armors(string coden, string type, string inventor, int yearmade, 
-		string user, string movieShown, string currStat, string capbl, 
-		string weap, string precedeModel, string succeedModel) : codename(coden), 
-																	armorType(type), 
-																	creator(inventor),
-																	yearMade(yearmade),
-																	users(user),
-																	movieAppeared(movieShown),
-																	currStats(currStat),
-																	capabilities(capbl),
-																	weapons(weap),
-																	precede(precedeModel),
-																	succeed(succeedModel) {};
-
-	// Destructor
-	// ~Armor();
-
-	// Setters
-	void setCodename(string cn) { codename = cn; }
-	void setArmorType(string at) { armorType = at; }
-
+	}
 	// Getters
+	string getCodeName() { return codename; }
 	string getCodename() { return codename; }
-	string getArmorType() { return armorType; }
 
+	string getArmorType() { return armorType; }
 	string getCreator() { return creator; }
 	string getUser() { return users; }
 	int getYear() { return yearMade; }
@@ -76,67 +55,77 @@ public:
 	string getPre() { return precede; }
 	string getSuc() { return succeed; }
 
+
+
+
+	//Overloaded Operator
+	Armors(string coden, string type, string inventor, int yearmade,
+		string user, string movieShown, string currStat, string capbl,
+		string weap, string precedeModel, string succeedModel) : codename(coden),
+		armorType(type),
+		creator(inventor),
+		yearMade(yearmade),
+		users(user),
+		movieAppeared(movieShown),
+		currStats(currStat),
+		capabilities(capbl),
+		weapons(weap),
+		precede(precedeModel),
+		succeed(succeedModel) {};
+
+	// Setters
+	void setCodeName(string cn) { codename = cn; }
+	void setCodename(string cn) { codename = cn; }
+
+	void setArmorType(string at) { armorType = at; }
+	//string getUnikey() { return codename; }
 	// Other functions
 	int intInputValid();
 	int isIntGood(int a, Armors*);
 
 	// Operator functions
-	/*bool operator<(Armors* a1);
-	bool operator>(Armors* a1);
-	bool operator==(Armors* a1);*/
-	
-	friend ostream& operator <<(ostream& out, const Armors* armor) {
-		out << "--------------------------------------------------------------------------" << endl
-			<< "            Codename:  " << armor->codename << endl
-			<< "          Armor Type: " << armor->armorType << endl
-			<< "             Made by: " << armor->creator << endl
-			<< "           Year Made:  " << armor->yearMade << endl
-			<< "               Users: " << armor->users << endl
-			<< "     Movies Appeared: " << armor->movieAppeared << endl
-			<< "      Current Status: " << armor->currStats << endl
-			<< "  Armor Capabilities: " << armor->capabilities << endl
-			<< "             Weapons: " << armor->weapons << endl
-			<< "             Precede: " << armor->precede  << endl
-			<< "             Succeed: " << armor->succeed << endl
-			<< "--------------------------------------------------------------------------" << endl;
-		return out;
-	}
-	
-	
-	friend istream& getline (istream& in, Armors* armor) {
-		getline(in, armor->codename);
-		getline(in, armor->armorType);
-		getline(in, armor->creator);
-		in >> armor->yearMade;
-		in.ignore();
-		getline(in, armor->users);
-		getline(in, armor->movieAppeared);
-		getline(in, armor->currStats);
-		getline(in, armor->capabilities);
-		getline(in, armor->weapons);
-		getline(in, armor->precede);
-		getline(in, armor->succeed);
-		return in;
-	}
-	
 
-	/*friend istream& getline(istream& in, Armors armor) {
-		getline(in, armor.codename);
-		getline(in, armor.armorType);
-		getline(in, armor.creator);
-		in.ignore();
-		in >> armor.yearMade;
-		getline(in, armor.users);
-		getline(in, armor.movieAppeared);
-		getline(in, armor.currStats);
-		getline(in, armor.capabilities);
-		getline(in, armor.weapons);
-		getline(in, armor.precede);
-		getline(in, armor.succeed);
-		return in;
-	}*/
+	friend bool operator==(Armors& a1, Armors& a2) { return a1.codename == a2.codename; }
+	friend istream& getline(istream& in, Armors *armor);
 
 };
+
+
+//Overloaded Operator
+istream& getline(istream& in, Armors* armor) {
+	//cout << "Enter the Codename: ";
+	//getline(in, armor->codename);
+	cout << "\nEnter the armor type: ";
+	getline(in, armor->armorType);
+	cout << "\nEnter the creater: ";
+	getline(in, armor->creator);
+	cout << "\nEnter the year made: ";
+	in >> armor->yearMade;
+	armor->yearMade = armor->isIntGood(armor->yearMade, armor);
+	in.ignore();
+	cout << "\nEnter the User : ";
+
+	getline(in, armor->users);
+	cout << "\nEnter the movie appeared in: ";
+
+	getline(in, armor->movieAppeared);
+	cout << "\nEnter the current status of the armor: ";
+
+	getline(in, armor->currStats);
+	cout << "\nEnter the capabilites of armor: ";
+
+	getline(in, armor->capabilities);
+	cout << "\nEnter the weapon: ";
+
+	getline(in, armor->weapons);
+	cout << "\nEnter the precede armor: ";
+
+	getline(in, armor->precede);
+	cout << "\nEnter the succeed armor: ";
+
+	getline(in, armor->succeed);
+	return in;
+}
 
 int Armors::intInputValid() {
 	int a = 0;
@@ -150,26 +139,13 @@ int Armors::intInputValid() {
 	return a;
 }
 
-int Armors::isIntGood(int a, Armors* A) {
+int Armors::isIntGood(int a, Armors *A) {
 	if (!cin.good())
 		a = A->intInputValid();
 	return a;
 }
 
-//bool Armors::operator<(Armors* a1)
-//{
-//	return a1->codename < this->codename;
-//}
-//
-//bool Armors::operator>(Armors* a1) 
-//{ 
-//	return a1->codename > this->codename; 
-//}
-//
-//bool Armors::operator==(Armors* a1) 
-//{ 
-//	return a1->codename == this->codename; 
-//}
 
-#endif
-#pragma once
+
+
+#endif#pragma once

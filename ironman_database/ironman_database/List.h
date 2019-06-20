@@ -1,3 +1,4 @@
+#pragma once
 
 #ifndef List_H
 #define List_H
@@ -168,10 +169,9 @@ void List::displayList(void visit(Armors*)) const
 	{
 		visit(pCur->A);  //Display the value in the node.
 		pCur = pCur->next;    //Move to the next node.
-
 	}
 	cout
-		<< "==== ============================= ========= ==========" << endl;
+		<< "\n====================================================" << endl;
 }
 
 //**************************************************
