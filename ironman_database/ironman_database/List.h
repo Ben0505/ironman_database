@@ -135,9 +135,8 @@ bool List::searchListP(Armors* target, Armors*& dataOut)
 	ListNode* pCur;
 	pCur = head->next;
 	bool found = false;
-	cout << target;
 	while (pCur != NULL && pCur->A->getCodename() != target->getCodename()) {
-		cout << pCur->A->getCodename() << endl;
+		//cout << pCur->A->getCodename() << endl;
 		pCur = pCur->next;
 
 	}
@@ -146,8 +145,6 @@ bool List::searchListP(Armors* target, Armors*& dataOut)
 	if (pCur != NULL && pCur->A->getCodename() == target->getCodename()) {
 		found = true;
 		dataOut = pCur->A;
-		cout << pCur->A << " " << dataOut << endl;
-		cout << "I found it!!!!!!!!!\n";
 	}
 	return found;
 

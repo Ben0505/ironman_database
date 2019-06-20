@@ -84,7 +84,6 @@ public:
 	int isIntGood(int a, Armors*);
 
 	// Operator functions
-
 	friend bool operator==(Armors& a1, Armors& a2) { return a1.codename == a2.codename; }
 	friend istream& getline(istream& in, Armors *armor);
 

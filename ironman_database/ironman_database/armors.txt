@@ -25,3 +25,4 @@ Igor;Heavy Lifting Suit;Tony Stark;2012;Tony Stark, J.A.R.V.I.S.;Iron Man 3;Dest
 Gemini;Sub-Orbital Suit;Tony Stark;2012;Tony Stark, J.A.R.V.I.S.;Iron Man 3;Destroyed;Sub-Orbit Travel, Heat and Radiation Resistance, Resistance to Cold Temperatures, High Speed Flight;Repulsors (Repulsion Mark I), Unibeam (Chest Repulsor), Large Concussive Cannon;Igor;Shotgun;
 Shotgun;Hyper-Velocity Traveling Suit Upgrade;Tony Stark;2012;Tony Stark, J.A.R.V.I.S.;Iron Man 3;Destroyed;Hyper Velocity Traveling;Repulsors (Repulsion Mark I), Unibeam (Chest Repulsor);Gemini;Bones;
 Bones;Skeleton Suit;Tony Stark;2012;Tony Stark, J.A.R.V.I.S.;Iron Man 3;Destroyed;Flexibility, Armor Separation, Speed;Repulsors (Repulsion Mark I), Unibeam (Chest Repulsor);Shotgun;;
+Boombox;Construction Suit;Tony Stark;2019;None;None;Unknown;Unknown;Unknown;None;;

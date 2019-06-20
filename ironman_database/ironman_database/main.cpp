@@ -18,7 +18,7 @@ typedef BinarySearchTree TreeType;
 /* Hash functions */
 void insertHashManager(Hash& H);
 void deleteHashManager(Hash& H);
-void searchHashManager(Hash& H, void visit(Armors*));
+void searchHashManager(Hash& H, void visit(Armors*), TreeType& bstp);
 void inputValid(string& returnItem);
 void intInputValid(string& returnItem);
 void hashInput(string filename, Hash& H);
@@ -61,8 +61,6 @@ void postOrderTraversal(TreeType& bstp, TreeType& bsts, Hash& H);	// print all a
 															//}
 
 void display(Armors* a) {
-	cout << "I am in display func\n";
-	cout << a->getCodename() << " " << a->getYear() << endl;
 	cout << "--------------------------------------------------------------------------" << endl;
 	cout << a->getCodename() << ":" << a->getArmorType() << "\nMade by: " << a->getCreator() << " in " << a->getYear()
 		<< "\nUsers: " << a->getUser() << ", appeared in: " << a->getMovie() << "\nCurrent Status: " << a->getStatus()
@@ -172,7 +170,7 @@ void deleteHashManager(Hash& H) {
 	cout << "___________________END DELETE SECTION_____\n";
 }
 
-void searchHashManager(Hash& H, void visit(Armors*)) {
+void searchHashManager(Hash& H, void visit(Armors*), TreeType& bstp) {
 	string key = "";
 	string sKey = "";
 	Armors* A;
@@ -190,8 +188,8 @@ void searchHashManager(Hash& H, void visit(Armors*)) {
 		A2->setCodename(key);
 		cout << endl;
 		if (A2->getCodename() != "Q") {
-			if (!H.searchHash(A2, A))
-				cout << "Armor " << key << " was not found in this Hash Table.\n";
+			if (!H.searchHash(A2, A) && !bstp.getEntry(A2, A))
+				cout << "Armor " << key << " was not found.\n";
 			else
 				visit(A);
 		}
@@ -223,45 +221,6 @@ void intInputValid(int & returnItem) {
 	} while (!cin.good());
 	returnItem = val;
 }
-
-//void hashInput(string filename, Hash& H)
-//{
-//	ifstream infile(filename);
-//
-//	string codename, type, creator, movie, curstat, precede, succeed, users, capbl, weap, space;
-//	int year = 0;
-//
-//	if (!infile) {
-//		cout << "Error happened to open the input file!" << endl;
-//		exit(EXIT_FAILURE);
-//	}
-//
-//	// READING THE FILE AND DECLARE TO RESPECTICE VARIABLE 
-//	//======================================================
-//
-//	while (getline(infile, codename, ';'))
-//	{
-//		getline(infile, type, ';');
-//		getline(infile, creator, ';');
-//		infile >> year;
-//		infile.ignore();
-//		getline(infile, users, ';');
-//		getline(infile, movie, ';');
-//		getline(infile, curstat, ';');
-//		getline(infile, capbl, ';');
-//		getline(infile, weap, ';');
-//		getline(infile, precede, ';');
-//		getline(infile, succeed, ';');
-//
-//
-//		Armors* armors;
-//		armors = new Armors(codename, type, creator, year, users, movie, curstat, capbl, weap, precede, succeed);
-//		H.insertItem(armors);
-//		cout << "Inserted\n";
-//		getline(infile, space);
-//	}
-//	infile.close();
-//}
 
 /**********************************************************************
 BUILD BST
@@ -382,12 +341,13 @@ void searchSubmenu(TreeType & bstp, TreeType & bsts, Hash & H)
 	cout << "User choice: ";
 	cin >> y;
 	while (!cin.good()) { intInputValid(y); }
+	cin.ignore();
 	cout << endl;
 
 	switch (y)
 	{
 	case 1: // search by primary key function
-		searchHashManager(H, display);
+		searchHashManager(H, display, bstp);
 		menu();
 		processChoice(bstp, bsts, H);
 		break;
@@ -430,6 +390,7 @@ void listSubmenu(TreeType & bstp, TreeType & bsts, Hash & H)
 	cout << "User choice: ";
 	cin >> y;
 	while (!cin.good()) { intInputValid(y); }
+	cin.ignore();
 	cout << endl;
 
 	switch (y)
@@ -483,6 +444,7 @@ void processChoice(TreeType & bstp, TreeType & bsts, Hash & H)
 	cout << "User input: ";
 	cin >> x;
 	while (!cin.good()) { intInputValid(x); }
+	cin.ignore();
 	cout << endl;
 
 	switch (x)
@@ -558,7 +520,7 @@ void insertToData(TreeType & bstp, TreeType & bsts, Hash & H)
 		if (A2->getCodename() != "Q")
 		{
 			if (H.searchHash(A2, A) && bstp.getEntry(A2, A))
-				cout << "Armor " << targetName << " is already in this Hash Table.";
+				cout << "Armor " << targetName << " already exists.";
 			else {
 				cout << "Enter the information of the Armor" << endl;
 				A->setCodename(targetName);
